@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Lecture notes: clustering, Expectation–Maximization and dimensionality reduction.">
+<title>CST413 Machine Learning · Module 4: Clustering and Dimensionality Reduction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=JetBrains+Mono:wght@400&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}}</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root{--bg:#eef3fb;--card:#fbfdff;--tx:#222b3a;--head:#12305c;--ac:#2f6fd0;--ac-soft:#d6e4fa;--mut:#68768d;--bd:#dae3f1;--dot:#dce5f3}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}}
+:root[data-theme="dark"]{--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--tx);font:19px/1.7 "Newsreader",Georgia,serif;background-color:var(--bg);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+a{color:var(--head);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;max-width:1150px;margin:0 auto;padding:0 24px}
+aside{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:0 0 24px}
+.side-title{font:400 13px/1 "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.04em;padding-bottom:12px;border-bottom:1px solid var(--bd);margin-bottom:14px}
+aside ol{list-style:none;margin:0;padding:0}
+aside a{display:grid;grid-template-columns:30px 1fr;gap:6px;padding:8px 10px;border-radius:6px;font-size:16px;line-height:1.35;color:var(--tx)}
+aside a i{font-style:normal;color:var(--ac);font-size:14px}
+aside a:hover{background:var(--ac-soft);text-decoration:none}
+aside a.on{background:var(--ac-soft)}
+main{padding:0 0 40px;min-width:0}
+.back{font-size:16px;color:var(--ac)}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;color:var(--head);line-height:1.2}
+.top{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:center;max-width:1150px;margin:0 auto;padding:30px 24px 0}
+.hd{text-align:center;min-width:0}
+.eyebrow{font:700 clamp(1.7rem,4.2vw,2.5rem)/1.2 "Fraunces",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;color:var(--ac)}
+.hd h1{margin:6px 0 6px;font-size:clamp(1.4rem,3.4vw,1.9rem)}
+.lead{color:var(--mut);margin:0 0 20px;font-size:1.15rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:20px 26px;margin-bottom:34px}
+.card h2{margin:0 0 8px;font-size:1.35rem}
+.card ul{margin:0;padding-left:20px}.card li{margin:6px 0}
+.card a{color:var(--ac);border-bottom:1px solid var(--ac-soft)}
+section{scroll-margin-top:20px;margin-bottom:44px}
+.num{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;font:600 15px "Newsreader",serif;margin-bottom:12px}
+section>h2{font-size:2rem;margin:0 0 14px}
+h3{font-size:1.3rem;margin:28px 0 8px;scroll-margin-top:20px}
+h4{font-size:1.05rem;margin:18px 0 6px}
+.formula{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 14px;margin:14px 0;overflow-x:auto;text-align:center}
+.formula mjx-container{margin:.4em 0!important}
+.def{background:linear-gradient(135deg,var(--ac-soft),var(--card));border:1px solid var(--bd);border-left:6px solid var(--ac);border-radius:14px;padding:16px 22px 18px;margin:12px 0 14px}
+.def p{margin:0;font:600 clamp(1.1rem,2.6vw,1.4rem)/1.45 "Fraunces",Georgia,serif;color:var(--head)}
+.ask{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px dashed var(--ac);border-radius:12px;padding:10px 16px;margin:0 0 14px;color:var(--head)}
+.ask b{color:var(--ac)}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
+.tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:6px}
+.rem{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.rem div{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:12px 16px;color:var(--head)}
+.rem b{display:block;color:var(--ac);margin-bottom:2px}
+.rem ul{margin:4px 0 0;padding-left:20px}
+@media(max-width:640px){.rem{grid-template-columns:1fr}}
+.steps{counter-reset:st;display:grid;gap:10px;margin:12px 0;padding:0;list-style:none}
+.steps li{counter-increment:st;background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;padding:10px 16px 10px 52px;position:relative}
+.steps li::before{content:counter(st);position:absolute;left:14px;top:10px;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+.qw{overflow-x:auto}
+.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
+.qt th{background:var(--ac);color:#fff;padding:8px 22px;text-align:left;font-weight:600}
+.qt td{padding:8px 22px;border-bottom:1px solid var(--bd);color:var(--head)}
+.ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
+summary{cursor:pointer;font-weight:600;color:var(--head)}
+details p{margin:8px 0 0;color:var(--mut)}
+.pager{margin:10px 0 28px}
+.pager a{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 22px}
+.pager small{display:block;color:var(--mut);font-size:14px}
+footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:8px}.top .back{justify-self:start}.layout{grid-template-columns:1fr;gap:0}aside{position:static;max-height:none;padding:24px 0 0}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="back" href="https://leenasilvoster.github.io/Machine_Learning/Module_3.html">← Module 3</a>
+  <header class="hd">
+    <div class="eyebrow">CST413 Machine Learning</div>
+    <h1>Module 4</h1>
+    <p class="lead">Clustering and Dimensionality Reduction</p>
+  </header>
+</div>
+<div class="layout">
+<aside>
+  <div class="side-title">Module 4</div>
+  <ol id="side">
+    <li><a href="#s1"><i>1</i><span>Similarity measures</span></a></li>
+    <li><a href="#s2"><i>2</i><span>Hierarchical agglomerative clustering</span></a></li>
+    <li><a href="#s3"><i>3</i><span>K-means clustering</span></a></li>
+    <li><a href="#s4"><i>4</i><span>Expectation–Maximization (EM)</span></a></li>
+    <li><a href="#s5"><i>5</i><span>Principal Component Analysis</span></a></li>
+    <li><a href="#check"><i>6</i><span>Self-check</span></a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="card">
+  <h2>Syllabus</h2>
+  <p style="margin:0 0 6px"><strong>Module-4 (Clustering and Dimensionality Reduction)</strong></p>
+  <ul>
+    <li><strong>Clustering:</strong> <a href="#sim">Similarity measures</a>, <a href="#hac">Hierarchical Agglomerative Clustering</a>, <a href="#km">K-means partitional clustering</a>, <a href="#em">Expectation Maximization (EM) for soft clustering</a>.</li>
+    <li><strong>Dimensionality reduction:</strong> <a href="#pca">Principal Component Analysis</a>.</li>
+  </ul>
+</div>
+
+<section id="s1"><div class="num">1</div><h2>Similarity measures</h2>
+  <h3 id="sim">Similarity measures</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s2"><div class="num">2</div><h2>Hierarchical agglomerative clustering</h2>
+  <h3 id="hac">Hierarchical Agglomerative Clustering</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s3"><div class="num">3</div><h2>K-means clustering</h2>
+  <h3 id="km">K-means partitional clustering</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s4"><div class="num">4</div><h2>Expectation–Maximization (EM)</h2>
+  <h3 id="em">Introduction</h3>
+  <div class="def"><p>The Expectation–Maximization algorithm estimates model parameters when some variables are hidden or unobserved.</p></div>
+  <div class="rem">
+    <div><b>K-means: hard clustering</b>Each data point belongs to only one cluster.</div>
+    <div><b>EM: soft clustering</b>Each point has a probability of belonging to each cluster.</div>
+  </div>
+  <p>In clustering, the hidden variable is the <mark>cluster membership</mark> of each point.</p>
+
+  <h3 id="emsteps">Main steps</h3>
+  <ol class="steps">
+    <li><strong>Initialization:</strong> choose initial parameter values.</li>
+    <li><strong>Expectation step (E-step):</strong> calculate the probabilities of the hidden variables using the current parameters.</li>
+    <li><strong>Maximization step (M-step):</strong> update the parameters using the probabilities calculated in the E-step.</li>
+    <li><strong>Convergence check:</strong> repeat until the parameter values or the likelihood change very little.</li>
+  </ol>
+
+  <h3 id="gmm">Gaussian mixture model</h3>
+  <p>A Gaussian mixture model assumes that the data are generated by a mixture of \(k\) Gaussian distributions. Each cluster \(C_i\) has:</p>
+  <div class="rem">
+    <div><b>Mean \(\mu_i\)</b>Its centre.</div>
+    <div><b>Covariance matrix \(\Sigma_i\)</b>Its spread, shape and orientation.</div>
+    <div style="grid-column:1/-1"><b>Mixture weight \(\pi_i=P(C_i)\)</b>Its prior probability. The weights satisfy \(\sum_{i=1}^{k}\pi_i=1\).</div>
+  </div>
+  <p>For a \(d\)-dimensional observation \(\mathbf{x}\), the Gaussian density is:</p>
+  <div class="formula">$$f_i(\mathbf{x})=\frac{\exp\left[-\tfrac12(\mathbf{x}-\boldsymbol{\mu}_i)^T\boldsymbol{\Sigma}_i^{-1}(\mathbf{x}-\boldsymbol{\mu}_i)\right]}{(2\pi)^{d/2}|\boldsymbol{\Sigma}_i|^{1/2}}$$</div>
+  <p>The mixture density is:</p>
+  <div class="formula">$$p(\mathbf{x}\mid\theta)=\sum_{i=1}^{k}\pi_i f_i(\mathbf{x})$$</div>
+
+  <h3 id="lik">Likelihood</h3>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> how well do the model parameters \(\theta\) explain the observed data?</span></div>
+  <p>For independent observations in a dataset \(D\), the likelihood is:</p>
+  <div class="formula">$$L(\theta)=\prod_{j=1}^{n}p(\mathbf{x}_j\mid\theta)$$</div>
+  <p>The log-likelihood is:</p>
+  <div class="formula">$$\ell(\theta)=\sum_{j=1}^{n}\log\left[\sum_{i=1}^{k}\pi_i f_i(\mathbf{x}_j)\right]$$</div>
+  <p>EM iteratively improves the parameter estimates so that this value increases.</p>
+
+  <h3 id="estep">E-step: cluster membership probabilities</h3>
+  <p>Using Bayes’ theorem:</p>
+  <div class="formula">$$r_{ji}=P(C_i\mid\mathbf{x}_j)=\frac{\pi_i f_i(\mathbf{x}_j)}{\sum_{a=1}^{k}\pi_a f_a(\mathbf{x}_j)}$$</div>
+  <p>Here \(r_{ji}\) is the <strong>responsibility</strong> of cluster \(i\) for point \(j\). It acts as the point’s weight in that cluster. For each point, \(\sum_{i=1}^{k}r_{ji}=1\).</p>
+
+  <h3 id="mstep">M-step: update the parameters</h3>
+  <p>The effective number of points in cluster \(i\) is \(N_i=\sum_{j=1}^{n}r_{ji}\).</p>
+  <div class="formula">$$\boldsymbol{\mu}_i^{\text{new}}=\frac{\sum_{j=1}^{n}r_{ji}\mathbf{x}_j}{N_i}$$
+  $$\boldsymbol{\Sigma}_i^{\text{new}}=\frac{\sum_{j=1}^{n}r_{ji}(\mathbf{x}_j-\boldsymbol{\mu}_i^{\text{new}})(\mathbf{x}_j-\boldsymbol{\mu}_i^{\text{new}})^T}{N_i}$$
+  $$\pi_i^{\text{new}}=\frac{N_i}{n}$$</div>
+  <div class="eg"><span class="tag">📌 In short</span><br>The M-step calculates a weighted mean, a weighted covariance and an updated cluster proportion.</div>
+
+  <h3 id="emalg">EM algorithm for Gaussian clustering</h3>
+  <ol class="steps">
+    <li>Select the number of clusters.</li>
+    <li>Initialize the means, covariance matrices and mixture weights. The slides use random means, identity covariance matrices and equal mixture weights.</li>
+    <li>Calculate the membership probabilities in the E-step.</li>
+    <li>Update the parameters in the M-step.</li>
+    <li>Repeat until convergence.</li>
+  </ol>
+
+  <h3 id="emapp">Applications</h3>
+  <ul>
+    <li>Clustering unlabelled data.</li>
+    <li>Parameter estimation with missing observations.</li>
+    <li>Estimating hidden or latent variables.</li>
+    <li>Estimating Hidden Markov Model parameters.</li>
+  </ul>
+
+  <h3 id="emadv">Advantages and limitations</h3>
+  <div class="rem">
+    <div><b>✅ Advantages</b><ul><li>Supports probabilistic cluster membership.</li><li>Handles models containing hidden variables.</li><li>Under exact EM updates, the likelihood does not decrease.</li></ul></div>
+    <div><b>⚠️ Limitations</b><ul><li>Convergence can be slow.</li><li>Results depend on initialization.</li><li>A global optimum is not guaranteed.</li></ul></div>
+  </div>
+  <div class="eg"><span class="tag">💡 Technical note</span><br>Forward and backward probabilities are used in the HMM application of EM. They are not required by every EM problem.</div>
+
+  <h3 id="coins">Worked example: two biased coins</h3>
+  <p>Consider two coins with \(\theta_A=P(\text{Head}\mid A)\) and \(\theta_B=P(\text{Head}\mid B)\). One coin is selected for each experiment and tossed ten times.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Experiment</th><th>Heads</th><th>Tails</th></tr>
+    <tr><td>1</td><td>5</td><td>5</td></tr><tr><td>2</td><td>9</td><td>1</td></tr><tr><td>3</td><td>8</td><td>2</td></tr><tr><td>4</td><td>4</td><td>6</td></tr><tr><td>5</td><td>7</td><td>3</td></tr>
+  </table></div>
+  <h4>When the coin identities are known</h4>
+  <p>If experiments 2, 3 and 5 use coin A, and experiments 1 and 4 use coin B:</p>
+  <div class="formula">$$\theta_A=\frac{9+8+7}{30}=\frac{24}{30}=0.8,\qquad \theta_B=\frac{5+4}{20}=\frac{9}{20}=0.45$$</div>
+  <h4>When the coin identities are hidden</h4>
+  <p>EM estimates the coin biases by repeatedly calculating probable coin identities and updating the biases. Start with \(\theta_A=0.6\) and \(\theta_B=0.5\), and assume both coins are equally likely to be selected.</p>
+
+  <h4>E-step</h4>
+  <p>For an experiment with \(h\) heads and \(t\) tails, calculate and normalize:</p>
+  <div class="formula">$$L_A=\theta_A^h(1-\theta_A)^t,\quad L_B=\theta_B^h(1-\theta_B)^t,\quad r_A=\frac{L_A}{L_A+L_B},\quad r_B=1-r_A$$</div>
+  <p>The binomial coefficient is common to both likelihoods, so it cancels during normalization.</p>
+  <div class="eg"><span class="tag">📌 Experiment 1: 5 heads, 5 tails</span><br>\(L_A=0.6^5\times0.4^5=0.0007962624\) and \(L_B=0.5^{10}=0.0009765625\). So \(r_A\approx0.4491\) and \(r_B\approx0.5509\).</div>
+  <div class="eg"><span class="tag">📌 Experiment 2: 9 heads, 1 tail</span><br>\(L_A=0.6^9\times0.4=0.0040310784\) and \(L_B=0.5^{10}=0.0009765625\). So \(r_A\approx0.8050\) and \(r_B\approx0.1950\).</div>
+  <p>The responsibilities for all experiments are:</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Experiment</th><th>Probability of A</th><th>Probability of B</th></tr>
+    <tr><td>1</td><td>0.449</td><td>0.551</td></tr><tr><td>2</td><td>0.805</td><td>0.195</td></tr><tr><td>3</td><td>0.733</td><td>0.267</td></tr><tr><td>4</td><td>0.352</td><td>0.648</td></tr><tr><td>5</td><td>0.647</td><td>0.353</td></tr>
+  </table></div>
+
+  <h4>Expected heads and tails</h4>
+  <p>Multiply each experiment’s heads and tails by its responsibility for each coin. For experiment 1, the expected counts for A are \(H_A=0.4491\times5\approx2.25\) and \(T_A=0.4491\times5\approx2.25\). For B they are \(H_B=T_B=0.5509\times5\approx2.75\). Repeating this for all experiments gives:</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Coin</th><th>Expected heads</th><th>Expected tails</th></tr>
+    <tr><td>A</td><td>21.2975</td><td>8.5722</td></tr><tr><td>B</td><td>11.7025</td><td>8.4278</td></tr>
+  </table></div>
+  <p>These fractional values represent expected counts.</p>
+
+  <h4>M-step</h4>
+  <div class="formula">$$\theta=\frac{\text{Expected heads}}{\text{Expected heads}+\text{Expected tails}}$$
+  $$\theta_A^{\text{new}}=\frac{21.2975}{21.2975+8.5722}\approx0.7130,\qquad \theta_B^{\text{new}}=\frac{11.7025}{11.7025+8.4278}\approx0.5813$$</div>
+  <p>Repeat the E-step and M-step using these updated values. After ten iterations:</p>
+  <div class="formula">$$\boxed{\theta_A\approx0.80,\qquad\theta_B\approx0.52}$$</div>
+  <div class="eg"><span class="tag">🎯 Remember</span><br>The E-step estimates hidden memberships; the M-step updates model parameters.</div>
+</section>
+
+<section id="s5"><div class="num">5</div><h2>Principal Component Analysis</h2>
+  <h3 id="pca">Principal Component Analysis</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="check"><div class="num">6</div><h2>Self-check</h2>
+  <details><summary>Question 1</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 2</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 3</summary><p>Answer to be added.</p></details>
+</section>
+
+<nav class="pager" aria-label="Next module">
+  <a href="https://leenasilvoster.github.io/Machine_Learning/Module_5.html"><small>Next module</small><span>Module 5 →</span></a>
+</nav>
+<footer><span>CST413 Machine Learning · Module 4</span><a href="https://leenasilvoster.github.io/Machine_Learning/Module_3.html">← Module 3</a></footer>
+</main>
+</div>
+<script>
+var ls=[].slice.call(document.querySelectorAll('#side a'));
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.hash==='#'+e.target.id)})})},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section[id]').forEach(function(s){io.observe(s)});
+</script>
+</body>
+</html>
