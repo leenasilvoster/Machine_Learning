@@ -32,23 +32,23 @@ main{padding:0 0 40px;min-width:0}
 .eyebrow{margin-top:22px;font:400 13px "JetBrains Mono",monospace;color:var(--ac);letter-spacing:.06em;text-transform:uppercase}
 h1,h2,h3{font-family:"Fraunces",Georgia,serif;color:var(--head);line-height:1.2}
 h1{font-size:clamp(2.2rem,5vw,3rem);margin:8px 0 10px}
-.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;max-width:1150px;margin:0 auto;padding:30px 24px 0}
-.hd{text-align:center}
-.hd .eyebrow{margin-top:0}
-.hd h1{margin:6px 0 6px}
+.top{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:center;max-width:1150px;margin:0 auto;padding:30px 24px 0}
+.hd{text-align:center;min-width:0}
+.hd .eyebrow{margin-top:0;font:700 clamp(1.7rem,4.2vw,2.5rem)/1.2 "Fraunces",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;color:var(--ac)}
+.hd h1{margin:6px 0 6px;font-size:clamp(1.4rem,3.4vw,1.9rem)}
 .hd .lead{margin:0 0 20px}
 .cmwrap{margin:8px 0 6px}
-.cm{display:grid;grid-template-columns:34px 34px 1fr 1fr;max-width:480px;margin:0 auto;font:600 16px/1.2 "Newsreader",Georgia,serif;color:#111;text-align:center}
+.cm{display:grid;grid-template-columns:34px 34px 1fr 1fr;max-width:480px;margin:0 auto;font:600 16px/1.2 "Newsreader",Georgia,serif;color:var(--head);text-align:center}
 .cm>div{display:grid;place-items:center;padding:6px}
 .cm .t{font-size:20px;letter-spacing:.03em;grid-column:3/5;background:transparent}
-.cm .h{background:#f8c864;border:1px solid #fff}
+.cm .h{background:#b9d0f3;border:1px solid var(--bg)}
 .cm .v{writing-mode:vertical-rl;transform:rotate(180deg);font-size:18px;grid-row:3/5;letter-spacing:0;white-space:nowrap}
-.cm .l{writing-mode:vertical-rl;transform:rotate(180deg);background:#f8c864;border:1px solid #fff}
-.cm .g{background:#4ee640;height:104px;font-size:20px;border:1px solid #fff}
-.cm .r{background:#f21b1b;height:104px;font-size:20px;border:1px solid #fff}
+.cm .l{writing-mode:vertical-rl;transform:rotate(180deg);background:#b9d0f3;border:1px solid var(--bg)}
+.cm .g{background:var(--ac);color:#fff;height:104px;font-size:20px;border:1px solid var(--bg)}
+.cm .r{background:var(--ac-soft);height:104px;font-size:20px;border:1px solid var(--bg)}
 .cmn{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin:14px auto 0;font-size:15px;line-height:1.35}
-.cmn div{padding:8px 12px;border-radius:4px;color:#111}
-.cmn .g{background:#4ee640}.cmn .r{background:#f21b1b;color:#fff}
+.cmn div{padding:8px 12px;border-radius:6px;color:var(--head)}
+.cmn .g{background:var(--ac);color:#fff}.cmn .r{background:var(--ac-soft)}
 .lead{color:var(--mut);margin:0 0 26px;font-size:1.15rem}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:20px 26px;margin-bottom:34px}
 .card h2{margin:0 0 8px;font-size:1.35rem}
@@ -58,6 +58,73 @@ section{scroll-margin-top:20px;margin-bottom:44px}
 .num{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;font:600 15px "Newsreader",serif;margin-bottom:12px}
 section>h2{font-size:2rem;margin:0 0 14px}
 h3{font-size:1.3rem;margin:26px 0 8px;scroll-margin-top:20px}
+.ct-wrap{overflow-x:auto;margin:14px 0}
+.ct{border-collapse:collapse;margin:0 auto;text-align:center;font-size:17px;background:var(--card)}
+.ct th,.ct td{padding:9px 20px;border-bottom:1px solid var(--bd);color:var(--head)}
+.ct td{font-weight:400}
+.ct .act{text-align:right;border:0}
+.ct .hl{background:var(--ac-soft);border-left:3px solid var(--ac);border-right:3px solid var(--ac)}
+.ct .hl-t{border-top:3px solid var(--ac)}
+.ct .hl-b{border-bottom:3px solid var(--ac)}
+.formula{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;margin:14px 0;overflow-x:auto;text-align:center}
+.hr td,.hr th{background:var(--ac-soft);border-top:3px solid var(--ac);border-bottom:3px solid var(--ac)}
+.hr .hr-l{border-left:3px solid var(--ac)}.hr .hr-r{border-right:3px solid var(--ac)}
+.fig{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:16px auto;max-width:560px}
+.fig svg{display:block;width:100%;height:auto}
+.fig text{font-family:"Newsreader",Georgia,serif;fill:var(--mut);font-size:15px}
+.pr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.pr2 div{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;font-size:16px;color:var(--head)}
+.pr2 b{display:block;color:var(--ac)}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:8px;padding:10px 16px;margin:14px 0;font-size:17px}
+.eq{display:flex;justify-content:center;align-items:center;gap:8px;font-size:19px;font-style:italic;color:var(--head);margin:6px 0}
+.eq b{font-style:normal}
+.fr{display:inline-flex;flex-direction:column;align-items:center}
+.fr span:first-child{border-bottom:1.5px solid var(--head);padding:0 8px 3px}
+.fr span:last-child{padding:3px 8px 0}
+u{text-decoration-color:var(--ac);text-decoration-thickness:2px;text-underline-offset:3px}
+mark{background:linear-gradient(transparent 55%,#b9d0f3 55%);color:inherit;padding:0 2px;font-weight:600}
+.def{background:linear-gradient(135deg,var(--ac-soft),var(--card));border:1px solid var(--bd);border-left:6px solid var(--ac);border-radius:14px;padding:16px 22px 18px;margin:12px 0 14px;box-shadow:0 4px 14px rgba(47,111,208,.10)}
+.def .tag,.eg .tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:10px}
+.def p{margin:0;font:600 clamp(1.15rem,2.6vw,1.45rem)/1.45 "Fraunces",Georgia,serif;color:var(--head)}
+.ask{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px dashed var(--ac);border-radius:12px;padding:10px 16px;margin:0 0 14px;color:var(--head)}
+.ask b{color:var(--ac)}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
+.eg .tag{margin-bottom:6px}
+.rem{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.rem div{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:12px 16px;color:var(--head)}
+.rem b{display:block;color:var(--ac);margin-bottom:2px}
+@media(max-width:640px){.rem,.pr2{grid-template-columns:1fr}}
+.rates{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0}
+.rate{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:14px 16px}
+.rate h4{margin:0 0 4px;font:700 1.05rem "Fraunces",Georgia,serif;color:var(--head)}
+.rate h4 span{color:var(--ac)}
+.rate p{margin:0 0 6px;font-size:16px;color:var(--mut);line-height:1.5}
+.rate .eq{font-size:17px;flex-wrap:wrap;justify-content:flex-start;gap:6px}
+@media(max-width:700px){.rates{grid-template-columns:1fr}}
+.chart{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:16px auto;max-width:520px}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{font-family:"Newsreader",Georgia,serif;fill:var(--head);font-size:15px}
+.chart figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
+.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
+.qt th{background:var(--ac);color:#fff;padding:8px 22px;text-align:left;font-weight:600}
+.qt td{padding:8px 22px;border-bottom:1px solid var(--bd);color:var(--head)}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+.keys div{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:12px 14px;color:var(--head);line-height:1.45}
+.keys b{display:block;font:700 1.35rem "Fraunces",Georgia,serif;color:var(--ac)}
+@media(max-width:700px){.keys{grid-template-columns:1fr}}
+.bsw{overflow-x:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:16px 0}
+.bs{min-width:620px;display:grid;grid-template-columns:120px auto auto;column-gap:26px;row-gap:12px;align-items:center}
+.bs .lab{font-weight:600;color:var(--head)}
+.cells{display:flex}
+.cells span{width:36px;height:36px;line-height:36px;text-align:center;display:block;border:1px solid var(--head);margin-left:-1px;font-size:15px;color:var(--head)}
+.cells sub{line-height:0;font-size:.7em}
+.cells .o{background:var(--ac);color:#fff}
+.cells .t{background:#b9d0f3}
+.cells .x{background:#fbe3d6}
+.bs .cap{text-align:center;color:var(--mut);font-size:15px;border-top:3px solid var(--bd);padding-top:6px}
+.steps{counter-reset:st;display:grid;gap:10px;margin:12px 0;padding:0;list-style:none}
+.steps li{counter-increment:st;background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;padding:10px 16px 10px 52px;position:relative}
+.steps li::before{content:counter(st);position:absolute;left:14px;top:10px;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
 .ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
 summary{cursor:pointer;font-weight:600;color:var(--head)}
@@ -66,7 +133,7 @@ details p{margin:8px 0 0;color:var(--mut)}
 .pager a{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 22px}
 .pager small{display:block;color:var(--mut);font-size:14px}
 footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
-@media(max-width:860px){.top{grid-template-columns:1fr;justify-items:center;gap:8px}.top span{display:none}.top .back{justify-self:start}.layout{grid-template-columns:1fr;gap:0}aside{position:static;max-height:none;padding:24px 0 0}}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:8px}.top .back{justify-self:start}.layout{grid-template-columns:1fr;gap:0}aside{position:static;max-height:none;padding:24px 0 0}}
 </style>
 </head>
 <body>
@@ -77,7 +144,6 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
     <h1>Module 5</h1>
     <p class="lead">Classification Assessment</p>
   </header>
-  <span></span>
 </div>
 <div class="layout">
 <aside>
@@ -121,19 +187,178 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
       <div class="g"><strong>TN:</strong> The predicted value is negative and it is negative.</div>
     </div>
   </div>
-  <h3 id="prec">Precision</h3><div class="ph">Content to be added.</div>
-  <h3 id="rec">Recall</h3><div class="ph">Content to be added.</div>
-  <h3 id="acc">Accuracy</h3><div class="ph">Content to be added.</div>
-  <h3 id="fm">F-Measure</h3><div class="ph">Content to be added.</div>
+  <h3 id="pr">Precision and Recall</h3>
+  <p>Two metrics used to measure the performance of a retrieval system are precision and recall. Think of a search engine: it <em>retrieves</em> some pages, but only some of the pages that exist are truly <em>relevant</em>. Precision and recall each ask a different question about how well it did.</p>
+  <div class="fig">
+<svg viewBox="0 0 520 420" role="img" aria-label="Relevant and retrieved elements: true positives, false positives, false negatives and true negatives">
+ <path d="M20 40v-8h240v8" fill="none" stroke="var(--head)" stroke-width="1.5"/>
+ <text x="140" y="22" text-anchor="middle" style="fill:var(--head)">relevant elements</text>
+ <rect x="20" y="44" width="240" height="300" style="fill:var(--ac-soft)"/>
+ <rect x="260" y="44" width="240" height="300" style="fill:var(--bg)"/>
+ <text x="140" y="70" text-anchor="middle">false negatives</text>
+ <text x="380" y="70" text-anchor="middle">true negatives</text>
+ <path d="M260 84A110 110 0 0 0 260 304Z" style="fill:#9fc2f7"/>
+ <path d="M260 84A110 110 0 0 1 260 304Z" style="fill:#fbe3d6"/>
+ <circle cx="260" cy="194" r="110" fill="none" stroke="var(--head)" stroke-width="2"/>
+ <text x="205" y="200" text-anchor="middle" style="fill:var(--head)">true positives</text>
+ <text x="318" y="200" text-anchor="middle" style="fill:#a4482a">false positives</text>
+ <g style="fill:var(--mut)">
+  <circle cx="50" cy="100" r="7"/><circle cx="115" cy="108" r="7"/><circle cx="50" cy="175" r="7"/><circle cx="70" cy="265" r="7"/><circle cx="130" cy="305" r="7"/><circle cx="215" cy="322" r="7"/>
+  <circle cx="200" cy="155" r="7"/><circle cx="228" cy="124" r="7"/><circle cx="215" cy="240" r="7"/><circle cx="185" cy="262" r="7"/>
+ </g>
+ <g fill="none" stroke="var(--mut)" stroke-width="2.5">
+  <circle cx="400" cy="90" r="7"/><circle cx="455" cy="160" r="7"/><circle cx="470" cy="240" r="7"/><circle cx="410" cy="305" r="7"/><circle cx="335" cy="322" r="7"/><circle cx="445" cy="215" r="7"/>
+  <circle cx="310" cy="150" r="7"/><circle cx="335" cy="240" r="7"/><circle cx="300" cy="270" r="7"/>
+ </g>
+ <path d="M255 300L238 370" stroke="var(--head)" stroke-width="1.5"/>
+ <text x="238" y="392" text-anchor="middle" style="fill:var(--head)">retrieved elements</text>
+</svg>
+<div class="pr2">
+ <div><b>Precision</b>How many retrieved items are relevant?</div>
+ <div><b>Recall</b>How many relevant items are retrieved?</div>
+</div>
+</div>
+
+  <h3 id="prec">Precision</h3>
+  <div class="def"><p>Precision is the fraction of relevant instances among the retrieved instances.</p></div>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> out of everything the system retrieved, how much was actually correct?</span></div>
+  <p>Precision is the number of correct instances retrieved divided by all retrieved instances. In the matrix, focus on the outlined <strong>Predicted Positive</strong> column: true positives and false positives.</p>
+  <div class="ct-wrap">
+    <table class="ct" aria-label="Confusion matrix with the predicted positive column highlighted">
+      <tr><td></td><td></td><th colspan="2">Predicted</th></tr>
+      <tr><td></td><td></td><th>Negative</th><th class="hl hl-t">Positive</th></tr>
+      <tr><th class="act" rowspan="2">Actual</th><th>Negative</th><td>True Negative</td><td class="hl">False Positive</td></tr>
+      <tr><th>Positive</th><td>False Negative</td><td class="hl hl-b">True Positive</td></tr>
+    </table>
+  </div>
+  <div class="formula"><div class="eq"><b>Precision</b> = <span class="fr"><span>True Positive</span><span>True Positive + False Positive</span></span></div><div class="eq">= <span class="fr"><span>True Positive</span><span>Total Predicted Positive</span></span></div></div>
+  <div class="eg"><span class="tag">📌 Example</span><br>A search returns 10 pages and 8 of them are relevant. Precision = 8 ÷ 10 = 0.8, which is 80%.</div>
+  <h3 id="rec">Recall</h3>
+  <div class="def"><p>Recall is the fraction of relevant instances that were retrieved.</p></div>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> out of everything that was actually correct, how much did the system find?</span></div>
+  <p>Recall is the number of correct instances retrieved divided by all correct instances. In the matrix, focus on the outlined <strong>Actual Positive</strong> row: true positives and false negatives.</p>
+  <div class="ct-wrap">
+    <table class="ct" aria-label="Confusion matrix with the actual positive row highlighted">
+      <tr><td></td><td></td><th colspan="2">Predicted</th></tr>
+      <tr><td></td><td></td><th>Negative</th><th>Positive</th></tr>
+      <tr><th class="act" rowspan="2">Actual</th><th>Negative</th><td>True Negative</td><td>False Positive</td></tr>
+      <tr class="hr"><th class="hr-l">Positive</th><td>False Negative</td><td class="hr-r">True Positive</td></tr>
+    </table>
+  </div>
+  <div class="formula"><div class="eq"><b>Recall</b> = <span class="fr"><span>True Positive</span><span>True Positive + False Negative</span></span></div><div class="eq">= <span class="fr"><span>True Positive</span><span>Total Actual Positive</span></span></div></div>
+  <div class="eg"><span class="tag">📌 Example</span><br>There are 20 relevant pages in total and the search finds 8 of them. Recall = 8 ÷ 20 = 0.4, which is 40%.</div>
+  <div class="rem">
+    <div><b>🎯 Precision</b>checks the <em>quality</em> of what you picked.</div>
+    <div><b>🔎 Recall</b>checks how much of the <em>good stuff</em> you managed to find.</div>
+  </div>
+  <h3 id="acc">Accuracy</h3>
+  <div class="def"><p>Accuracy is the number of correctly classified data instances divided by the total number of data instances.</p></div>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> out of all the predictions made, how many were correct?</span></div>
+  <p>Correct predictions are the true positives (TP) and true negatives (TN). Every prediction, correct or not, is counted in the denominator.</p>
+  <div class="formula"><div class="eq"><b>Accuracy</b> = <span class="fr"><span>TN + TP</span><span>TN + FP + TP + FN</span></span></div><div class="eq">= <span class="fr"><span>Correct predictions</span><span>Total predictions</span></span></div></div>
+  <div class="eg"><span class="tag">📌 Example</span><br>A classifier makes 100 predictions and 90 of them are correct. Accuracy = 90 ÷ 100 = 0.9, which is 90%.</div>
+  <div class="eg"><span class="tag">⚠️ Be careful</span><br>Accuracy may not be a good measure when the dataset is imbalanced, that is, when the negative and positive classes have different numbers of instances. For example, if 95 of 100 instances are negative, a model that always predicts "negative" scores 95% accuracy, yet it never finds a single positive.</div>
+  <h3 id="fm">F-Measure</h3>
+  <div class="def"><p>The F1 score combines precision and recall into a single value, seeking a balance between the two.</p></div>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> how can I judge precision and recall together with just one number?</span></div>
+  <p>The F-score is a weighted average of precision and recall. The F1 score is their harmonic mean, so it is high only when both precision and recall are high.</p>
+  <div class="formula"><div class="eq"><b>F1</b> = 2 × <span class="fr"><span>Precision × Recall</span><span>Precision + Recall</span></span></div></div>
+  <div class="eg"><span class="tag">📌 Example</span><br>Precision = 0.8 and Recall = 0.4. F1 = 2 × (0.8 × 0.4) ÷ (0.8 + 0.4) = 0.64 ÷ 1.2 ≈ 0.53. The simple average would be 0.6, so F1 is pulled down by the weaker score.</div>
+  <div class="eg"><span class="tag">✅ When to use</span><br>F1 may be a better measure when we need a balance between precision and recall <em>and</em> the class distribution is uneven, that is, when there is a large number of actual negatives.</div>
 </section>
 
 <section id="s2"><div class="num">2</div><h2>ROC curve and AUC</h2>
-  <h3 id="roc">Receiver Operating Characteristic (ROC) curve</h3><div class="ph">Content to be added.</div>
-  <h3 id="auc">Area Under Curve (AUC)</h3><div class="ph">Content to be added.</div>
+  <h3 id="rates">Rates from the confusion matrix</h3>
+  <div class="rates">
+    <div class="rate"><h4>Sensitivity <span>(True Positive Rate, TPR)</span></h4><p>The fraction of correct predictions among all points in the positive class. It is simply the recall for the positive class.</p><div class="eq">TPR = <span>recall<sub>P</sub></span> = <span class="fr"><span>TP</span><span>TP + FN</span></span></div></div>
+    <div class="rate"><h4>Specificity <span>(True Negative Rate, TNR)</span></h4><p>The fraction of correct predictions among all points in the negative class. It is simply the recall for the negative class.</p><div class="eq">TNR = specificity = <span>recall<sub>N</sub></span> = <span class="fr"><span>TN</span><span>FP + TN</span></span></div></div>
+    <div class="rate"><h4>False Negative Rate <span>(FNR)</span></h4><p>The fraction of positive points that the classifier wrongly predicts as negative.</p><div class="eq">FNR = <span class="fr"><span>FN</span><span>TP + FN</span></span> = 1 − sensitivity</div></div>
+    <div class="rate"><h4>False Positive Rate <span>(FPR)</span></h4><p>The fraction of negative points that the classifier wrongly predicts as positive.</p><div class="eq">FPR = <span class="fr"><span>FP</span><span>FP + TN</span></span> = 1 − specificity</div></div>
+  </div>
+  <h3 id="roc">Receiver Operating Characteristic (ROC) curve</h3>
+  <div class="def"><p>A ROC curve can only be used to assess classifiers that return a confidence score, or a probability, for their predictions.</p></div>
+  <div class="eg"><span class="tag">📌 Examples</span><br>Logistic regression, neural networks and decision trees (and ensemble models based on decision trees) can all be assessed using ROC curves.</div>
+  <p>ROC curves commonly use the combination of the true positive rate (TPR) and the false positive rate (FPR), which are given as:</p>
+  <div class="formula"><div class="eq">TPR = <span class="fr"><span>TP</span><span>TP + FN</span></span> &nbsp;and&nbsp; FPR = <span class="fr"><span>FP</span><span>FP + TN</span></span></div></div>
+  <figure class="chart">
+<svg viewBox="0 0 420 380" role="img" aria-label="ROC curves: perfect classifier at top-left, curves closer to it are better, random classifier is the diagonal">
+ <g stroke="var(--bd)" stroke-width="1">
+  <path d="M70 40H380M70 107.5H380M70 175H380M70 242.5H380M70 310H380"/><path d="M70 40V310M147.5 40V310M225 40V310M302.5 40V310M380 40V310"/>
+ </g>
+ <path d="M70 40V310H380" fill="none" stroke="var(--head)" stroke-width="1.5"/>
+ <text x="225" y="26" text-anchor="middle">ROC curve</text>
+ <text x="60" y="45" text-anchor="end">1.0</text><text x="60" y="179" text-anchor="end">0.5</text><text x="60" y="315" text-anchor="end">0.0</text>
+ <text x="70" y="332" text-anchor="middle">0.0</text><text x="225" y="332" text-anchor="middle">0.5</text><text x="380" y="332" text-anchor="middle">1.0</text>
+ <text x="225" y="360" text-anchor="middle">False positive rate</text>
+ <text transform="translate(18 175) rotate(-90)" text-anchor="middle">True positive rate</text>
+ <path d="M70 310C74 70 130 42 380 40" fill="none" stroke="#2f9be8" stroke-width="3"/>
+ <path d="M70 310C95 160 180 90 380 40" fill="none" stroke="#2fb34a" stroke-width="3"/>
+ <path d="M70 310C120 215 250 105 380 40" fill="none" stroke="#f0952a" stroke-width="3"/>
+ <path d="M70 310L380 40" stroke="#d63a3a" stroke-width="2.5" stroke-dasharray="7 5"/>
+ <circle cx="70" cy="40" r="6" fill="#2f6fd0"/>
+ <text x="150" y="30" style="fill:#2f6fd0;font-size:14px" text-anchor="middle">Perfect</text>
+ <text x="150" y="46" style="fill:#2f6fd0;font-size:14px" text-anchor="middle">classifier</text>
+ <text x="262" y="100" text-anchor="middle">Better</text>
+ <text x="330" y="212" text-anchor="middle">Worse</text>
+ <path d="M283 120L318 188" stroke="var(--head)" stroke-width="2" marker-start="url(#ar)" marker-end="url(#ar)"/>
+ <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8Z" fill="var(--head)"/></marker></defs>
+ <text transform="translate(200 250) rotate(-41)" text-anchor="middle" style="fill:#d63a3a">Random classifier</text>
+</svg>
+<figcaption>The closer a curve is to the top-left corner, the better the classifier.</figcaption>
+</figure>
+  <h3 id="auc">Area Under Curve (AUC)</h3>
+  <div class="def"><p>The higher the area under the ROC curve (AUC), the better the classifier.</p></div>
+  <div class="keys">
+    <div><b>AUC &gt; 0.5</b>The classifier is better than a random classifier.</div>
+    <div><b>AUC &lt; 0.5</b>Something is wrong with your model.</div>
+    <div><b>AUC = 1</b>A perfect classifier.</div>
+  </div>
+  <figure class="chart">
+<svg viewBox="0 0 440 340" role="img" aria-label="Two ROC curves: ROC 1 with AUC 0.9 and ROC 2 with AUC 0.65, and the diagonal for a random classifier">
+ <path d="M50 20V290H390V20Z" fill="none" stroke="var(--head)" stroke-width="1.5"/>
+ <path d="M50 290C56 80 140 30 390 20" fill="none" stroke="var(--head)" stroke-width="3"/>
+ <path d="M50 290C120 180 240 70 390 20" fill="none" stroke="var(--head)" stroke-width="3"/>
+ <path d="M50 290L390 20" stroke="var(--head)" stroke-width="2.5" stroke-dasharray="7 5"/>
+ <text transform="translate(132 158) rotate(-58)" text-anchor="middle">ROC 1 (AUC = 0.9)</text>
+ <text transform="translate(205 205) rotate(-42)" text-anchor="middle">ROC 2 (AUC = 0.65)</text>
+ <text x="220" y="322" text-anchor="middle">False positive rate</text>
+ <text transform="translate(18 155) rotate(-90)" text-anchor="middle">True positive rate</text>
+</svg>
+<figcaption>A larger area under the curve means a better classifier. The dashed line is a random classifier.</figcaption>
+</figure>
+  <table class="qt">
+    <tr><th>AUC values</th><th>Test quality</th></tr>
+    <tr><td>0.9 – 1.0</td><td>Excellent</td></tr>
+    <tr><td>0.8 – 0.9</td><td>Very good</td></tr>
+    <tr><td>0.7 – 0.8</td><td>Good</td></tr>
+    <tr><td>0.6 – 0.7</td><td>Satisfactory</td></tr>
+    <tr><td>0.5 – 0.6</td><td>Unsatisfactory</td></tr>
+  </table>
+  <div class="def"><p>ROC curves are insensitive to class skew.</p></div>
+  <p>The TPR can be read as the probability of predicting a positive point as positive. The FPR can be read as the probability of predicting a negative point as positive. Neither depends on the ratio of the positive class size to the negative class size.</p>
+  <div class="eg"><span class="tag">✅ Good to know</span><br>This is a desirable property. The ROC curve stays essentially the same whether the classes are balanced (about the same number of points) or skewed (one class has many more points than the other).</div>
 </section>
 
 <section id="s3"><div class="num">3</div><h2>Bootstrapping and cross validation</h2>
-  <h3 id="boot">Bootstrapping</h3><div class="ph">Content to be added.</div>
+  <h3 id="boot">Bootstrapping</h3>
+  <div class="def"><p>The bootstrap method is a resampling technique used to estimate statistics on a population by sampling a dataset with replacement.</p></div>
+  <div class="ask"><span>🤔</span><span><b>Ask yourself:</b> how can I estimate something about a population when I only have one dataset?</span></div>
+  <p>The bootstrap method estimates quantities about a population by averaging the estimates from multiple small data samples.</p>
+  <h4 style="margin:18px 0 6px;font:700 1.05rem 'Fraunces',Georgia,serif;color:var(--head)">How it works</h4>
+  <ol class="steps">
+    <li>Generate <em>t</em> samples of size <em>n</em> by sampling from the dataset <em>D</em> <strong>with replacement</strong>. The same point can be chosen more than once, so each sample <em>D<sub>i</sub></em> is different.</li>
+    <li>For each sample <em>D<sub>i</sub></em>, run the same algorithm.</li>
+  </ol>
+  <div class="bsw"><div class="bs" role="group" aria-label="Three bootstrap samples drawn with replacement from a dataset of ten points">
+<div class="lab">Original dataset</div><div class="cells"><span class="o">X<sub>1</sub></span><span class="o">X<sub>2</sub></span><span class="o">X<sub>3</sub></span><span class="o">X<sub>4</sub></span><span class="o">X<sub>5</sub></span><span class="o">X<sub>6</sub></span><span class="o">X<sub>7</sub></span><span class="o">X<sub>8</sub></span><span class="o">X<sub>9</sub></span><span class="o">X<sub>10</sub></span></div><div></div>
+<div class="lab">Bootstrap 1</div><div class="cells"><span class="t">X<sub>8</sub></span><span class="t">X<sub>6</sub></span><span class="t">X<sub>2</sub></span><span class="t">X<sub>9</sub></span><span class="t">X<sub>5</sub></span><span class="t">X<sub>8</sub></span><span class="t">X<sub>1</sub></span><span class="t">X<sub>4</sub></span><span class="t">X<sub>8</sub></span><span class="t">X<sub>2</sub></span></div><div class="cells"><span class="x">X<sub>3</sub></span><span class="x">X<sub>7</sub></span><span class="x">X<sub>10</sub></span></div>
+<div class="lab">Bootstrap 2</div><div class="cells"><span class="t">X<sub>10</sub></span><span class="t">X<sub>1</sub></span><span class="t">X<sub>3</sub></span><span class="t">X<sub>5</sub></span><span class="t">X<sub>1</sub></span><span class="t">X<sub>7</sub></span><span class="t">X<sub>4</sub></span><span class="t">X<sub>2</sub></span><span class="t">X<sub>1</sub></span><span class="t">X<sub>8</sub></span></div><div class="cells"><span class="x">X<sub>6</sub></span><span class="x">X<sub>9</sub></span></div>
+<div class="lab">Bootstrap 3</div><div class="cells"><span class="t">X<sub>6</sub></span><span class="t">X<sub>5</sub></span><span class="t">X<sub>4</sub></span><span class="t">X<sub>1</sub></span><span class="t">X<sub>2</sub></span><span class="t">X<sub>4</sub></span><span class="t">X<sub>2</sub></span><span class="t">X<sub>6</sub></span><span class="t">X<sub>9</sub></span><span class="t">X<sub>2</sub></span></div><div class="cells"><span class="x">X<sub>3</sub></span><span class="x">X<sub>7</sub></span><span class="x">X<sub>8</sub></span><span class="x">X<sub>10</sub></span></div>
+<div></div><div class="cap">Training sets</div><div class="cap">Test sets</div>
+</div></div>
+  <p style="color:var(--mut);font-size:16px;margin-top:-6px">In the figure, each bootstrap sample is drawn with replacement, so some points repeat (X<sub>8</sub> appears three times in Bootstrap 1). The points that were never chosen form the test set.</p>
+  <figure class="chart" style="max-width:600px"><svg viewBox="0 0 580 400" role="img" aria-label="A single sample gives one estimate, while many bootstrap samples give a distribution of estimates"><defs><marker id="ba" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M1 1L8 4.5L1 8" fill="none" stroke="var(--head)" stroke-width="1.6"/></marker></defs><rect x="15" y="20" width="130" height="130" fill="none" stroke="var(--head)" stroke-width="2"/><circle cx="59.2" cy="43.8" r="2.5" fill="#2f6fd0"/><circle cx="29.5" cy="89.2" r="2.0" fill="#2f6fd0"/><circle cx="27.8" cy="85.9" r="1.4" fill="#2f6fd0"/><circle cx="72.2" cy="34.2" r="1.5" fill="#2f6fd0"/><circle cx="71.1" cy="123.6" r="1.5" fill="#2f6fd0"/><circle cx="47.3" cy="100.0" r="3.0" fill="#2f6fd0"/><circle cx="89.1" cy="72.8" r="3.0" fill="#2f6fd0"/><circle cx="26.5" cy="127.3" r="1.8" fill="#2f6fd0"/><circle cx="38.0" cy="39.9" r="1.9" fill="#2f6fd0"/><circle cx="117.3" cy="47.3" r="2.3" fill="#2f6fd0"/><circle cx="96.4" cy="69.9" r="2.3" fill="#2f6fd0"/><circle cx="28.4" cy="33.0" r="1.7" fill="#2f6fd0"/><circle cx="101.3" cy="76.5" r="1.9" fill="#2f6fd0"/><circle cx="90.1" cy="79.5" r="1.8" fill="#2f6fd0"/><circle cx="114.7" cy="108.5" r="1.7" fill="#2f6fd0"/><circle cx="88.8" cy="88.0" r="2.9" fill="#2f6fd0"/><circle cx="107.1" cy="60.0" r="3.0" fill="#2f6fd0"/><circle cx="34.9" cy="75.3" r="2.7" fill="#2f6fd0"/><circle cx="38.9" cy="83.7" r="1.4" fill="#2f6fd0"/><circle cx="99.8" cy="116.2" r="2.3" fill="#2f6fd0"/><circle cx="124.3" cy="63.0" r="2.5" fill="#2f6fd0"/><circle cx="91.1" cy="94.4" r="2.1" fill="#2f6fd0"/><circle cx="120.1" cy="137.5" r="2.2" fill="#2f6fd0"/><circle cx="99.4" cy="33.2" r="2.6" fill="#2f6fd0"/><circle cx="97.4" cy="143.2" r="2.8" fill="#2f6fd0"/><circle cx="54.6" cy="71.5" r="2.5" fill="#2f6fd0"/><circle cx="23.7" cy="80.5" r="1.6" fill="#2f6fd0"/><circle cx="34.8" cy="33.0" r="2.7" fill="#2f6fd0"/><circle cx="36.3" cy="55.2" r="2.0" fill="#2f6fd0"/><circle cx="123.8" cy="35.5" r="2.1" fill="#2f6fd0"/><circle cx="85.8" cy="130.2" r="2.8" fill="#2f6fd0"/><circle cx="123.0" cy="58.9" r="2.1" fill="#2f6fd0"/><circle cx="63.3" cy="130.3" r="3.0" fill="#2f6fd0"/><circle cx="38.8" cy="46.8" r="1.7" fill="#2f6fd0"/><circle cx="48.5" cy="83.2" r="2.4" fill="#2f6fd0"/><circle cx="52.0" cy="26.5" r="2.1" fill="#2f6fd0"/><circle cx="64.6" cy="92.8" r="3.0" fill="#2f6fd0"/><circle cx="102.5" cy="86.8" r="2.4" fill="#2f6fd0"/><circle cx="100.8" cy="32.4" r="2.9" fill="#2f6fd0"/><circle cx="113.0" cy="129.2" r="2.7" fill="#2f6fd0"/><circle cx="67.3" cy="73.1" r="1.5" fill="#2f6fd0"/><circle cx="95.8" cy="33.3" r="1.4" fill="#2f6fd0"/><circle cx="45.6" cy="45.2" r="1.9" fill="#2f6fd0"/><circle cx="27.2" cy="26.0" r="1.6" fill="#2f6fd0"/><circle cx="33.0" cy="68.9" r="1.4" fill="#2f6fd0"/><path d="M155 85H195" stroke="var(--head)" stroke-width="2" marker-end="url(#ba)"/><rect x="205" y="45" width="80" height="80" fill="none" stroke="var(--head)" stroke-width="2"/><circle cx="270.5" cy="92.8" r="1.6" fill="#2f6fd0"/><circle cx="228.2" cy="74.6" r="2.0" fill="#2f6fd0"/><circle cx="219.4" cy="108.7" r="3.1" fill="#2f6fd0"/><circle cx="242.7" cy="83.9" r="1.5" fill="#2f6fd0"/><circle cx="217.9" cy="74.3" r="1.8" fill="#2f6fd0"/><circle cx="267.4" cy="62.0" r="1.4" fill="#2f6fd0"/><circle cx="275.7" cy="86.9" r="1.6" fill="#2f6fd0"/><circle cx="247.9" cy="52.8" r="2.2" fill="#2f6fd0"/><circle cx="277.5" cy="109.7" r="2.5" fill="#2f6fd0"/><circle cx="228.8" cy="75.9" r="1.6" fill="#2f6fd0"/><circle cx="263.5" cy="87.2" r="2.7" fill="#2f6fd0"/><circle cx="233.4" cy="66.2" r="2.7" fill="#2f6fd0"/><circle cx="278.0" cy="109.0" r="2.7" fill="#2f6fd0"/><circle cx="266.6" cy="101.3" r="1.7" fill="#2f6fd0"/><path d="M295 85H335" stroke="var(--head)" stroke-width="2" marker-end="url(#ba)"/><path d="M350 130C380 130 395 40 430 40C465 40 480 130 560 130" fill="none" stroke="#2f6fd0" stroke-width="3.5"/><path d="M350 138H560" stroke="var(--head)" stroke-width="2"/><text x="285" y="12" text-anchor="middle" style="font-size:14px;fill:var(--mut)">One sample, one estimate</text><rect x="15" y="200" width="130" height="170" fill="none" stroke="var(--head)" stroke-width="2"/><circle cx="82.1" cy="262.2" r="1.4" fill="#e8962a"/><circle cx="24.3" cy="250.1" r="1.8" fill="#e8962a"/><circle cx="102.7" cy="357.1" r="2.1" fill="#e8962a"/><circle cx="131.6" cy="362.1" r="3.0" fill="#e8962a"/><circle cx="64.0" cy="240.8" r="1.7" fill="#e8962a"/><circle cx="44.2" cy="238.3" r="2.4" fill="#e8962a"/><circle cx="127.2" cy="338.8" r="2.2" fill="#e8962a"/><circle cx="98.1" cy="332.3" r="1.5" fill="#e8962a"/><circle cx="98.9" cy="349.7" r="2.7" fill="#e8962a"/><circle cx="109.5" cy="281.5" r="1.6" fill="#e8962a"/><circle cx="114.1" cy="258.5" r="2.7" fill="#e8962a"/><circle cx="135.7" cy="268.5" r="2.0" fill="#e8962a"/><circle cx="132.7" cy="320.5" r="1.6" fill="#e8962a"/><circle cx="36.0" cy="229.9" r="2.9" fill="#e8962a"/><circle cx="116.2" cy="229.1" r="2.8" fill="#e8962a"/><circle cx="136.7" cy="309.8" r="1.9" fill="#e8962a"/><circle cx="85.7" cy="226.7" r="1.3" fill="#e8962a"/><circle cx="135.6" cy="308.6" r="2.2" fill="#e8962a"/><circle cx="131.2" cy="274.5" r="2.9" fill="#e8962a"/><circle cx="118.5" cy="239.3" r="1.8" fill="#e8962a"/><circle cx="55.6" cy="244.0" r="2.4" fill="#e8962a"/><circle cx="51.6" cy="272.2" r="1.6" fill="#e8962a"/><circle cx="128.4" cy="261.9" r="2.1" fill="#e8962a"/><circle cx="89.8" cy="348.9" r="2.1" fill="#e8962a"/><circle cx="129.3" cy="285.3" r="2.3" fill="#e8962a"/><circle cx="82.8" cy="209.0" r="2.1" fill="#e8962a"/><circle cx="42.6" cy="206.6" r="2.7" fill="#e8962a"/><circle cx="41.3" cy="280.8" r="2.6" fill="#e8962a"/><circle cx="86.7" cy="257.5" r="2.2" fill="#e8962a"/><circle cx="86.5" cy="329.9" r="1.5" fill="#e8962a"/><circle cx="87.1" cy="245.3" r="1.8" fill="#e8962a"/><circle cx="112.1" cy="286.2" r="2.3" fill="#e8962a"/><circle cx="110.7" cy="350.2" r="2.1" fill="#e8962a"/><circle cx="93.3" cy="285.9" r="2.2" fill="#e8962a"/><circle cx="102.7" cy="277.5" r="2.3" fill="#e8962a"/><circle cx="77.4" cy="354.8" r="2.6" fill="#e8962a"/><circle cx="124.4" cy="354.9" r="1.8" fill="#e8962a"/><circle cx="87.0" cy="355.0" r="2.8" fill="#e8962a"/><circle cx="37.2" cy="225.2" r="2.1" fill="#e8962a"/><circle cx="29.6" cy="244.0" r="1.4" fill="#e8962a"/><circle cx="100.0" cy="329.9" r="2.9" fill="#e8962a"/><circle cx="39.2" cy="319.1" r="2.5" fill="#e8962a"/><circle cx="37.9" cy="345.5" r="3.0" fill="#e8962a"/><circle cx="46.9" cy="356.5" r="2.0" fill="#e8962a"/><circle cx="78.5" cy="362.4" r="2.8" fill="#e8962a"/><circle cx="40.1" cy="274.2" r="2.2" fill="#e8962a"/><circle cx="61.0" cy="236.9" r="1.9" fill="#e8962a"/><circle cx="106.2" cy="209.1" r="2.3" fill="#e8962a"/><circle cx="73.0" cy="208.9" r="1.9" fill="#e8962a"/><circle cx="94.6" cy="286.9" r="1.4" fill="#e8962a"/><circle cx="137.2" cy="330.6" r="3.0" fill="#e8962a"/><circle cx="33.4" cy="248.0" r="1.4" fill="#e8962a"/><circle cx="112.9" cy="248.7" r="1.5" fill="#e8962a"/><circle cx="70.8" cy="350.0" r="2.8" fill="#e8962a"/><circle cx="51.5" cy="229.6" r="2.9" fill="#e8962a"/><circle cx="88.3" cy="316.7" r="1.5" fill="#e8962a"/><circle cx="27.8" cy="314.7" r="2.1" fill="#e8962a"/><circle cx="29.5" cy="354.3" r="2.4" fill="#e8962a"/><circle cx="115.6" cy="219.2" r="2.8" fill="#e8962a"/><circle cx="28.9" cy="342.3" r="2.1" fill="#e8962a"/><rect x="215" y="190" width="52" height="42" fill="var(--card)" stroke="var(--head)" stroke-width="1.5"/><circle cx="234.6" cy="212.6" r="2.0" fill="#e8962a"/><circle cx="231.7" cy="199.9" r="1.5" fill="#e8962a"/><circle cx="230.5" cy="199.3" r="1.1" fill="#e8962a"/><circle cx="223.0" cy="202.1" r="1.3" fill="#e8962a"/><circle cx="233.2" cy="218.8" r="1.2" fill="#e8962a"/><circle cx="241.0" cy="201.3" r="1.3" fill="#e8962a"/><circle cx="221.7" cy="203.5" r="0.9" fill="#e8962a"/><circle cx="250.3" cy="212.5" r="1.1" fill="#e8962a"/><circle cx="240.0" cy="224.0" r="1.0" fill="#e8962a"/><path d="M152 285C185 248 190 211 210 211" fill="none" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><path d="M275 211 L330 262" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><rect x="215" y="239" width="52" height="42" fill="var(--card)" stroke="var(--head)" stroke-width="1.5"/><circle cx="253.8" cy="258.0" r="1.5" fill="#e8962a"/><circle cx="254.4" cy="256.8" r="1.5" fill="#e8962a"/><circle cx="248.5" cy="274.5" r="1.3" fill="#e8962a"/><circle cx="254.3" cy="266.2" r="1.7" fill="#e8962a"/><circle cx="237.2" cy="255.4" r="1.0" fill="#e8962a"/><circle cx="226.2" cy="247.1" r="1.8" fill="#e8962a"/><circle cx="231.2" cy="249.9" r="1.0" fill="#e8962a"/><circle cx="254.7" cy="271.1" r="1.7" fill="#e8962a"/><circle cx="232.3" cy="252.3" r="1.3" fill="#e8962a"/><path d="M152 285C185 272 190 260 210 260" fill="none" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><path d="M275 260 L330 290" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><rect x="215" y="288" width="52" height="42" fill="var(--card)" stroke="var(--head)" stroke-width="1.5"/><circle cx="239.4" cy="298.7" r="1.4" fill="#e8962a"/><circle cx="231.5" cy="322.9" r="2.1" fill="#e8962a"/><circle cx="242.9" cy="301.3" r="2.1" fill="#e8962a"/><circle cx="233.4" cy="304.7" r="0.9" fill="#e8962a"/><circle cx="236.3" cy="308.2" r="1.5" fill="#e8962a"/><circle cx="229.0" cy="309.1" r="0.9" fill="#e8962a"/><circle cx="231.6" cy="296.7" r="1.4" fill="#e8962a"/><circle cx="222.7" cy="294.7" r="1.3" fill="#e8962a"/><circle cx="230.3" cy="311.6" r="1.5" fill="#e8962a"/><path d="M152 285C185 297 190 309 210 309" fill="none" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><path d="M275 309 L330 318" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><rect x="215" y="337" width="52" height="42" fill="var(--card)" stroke="var(--head)" stroke-width="1.5"/><circle cx="251.0" cy="362.7" r="1.8" fill="#e8962a"/><circle cx="256.2" cy="354.7" r="1.3" fill="#e8962a"/><circle cx="260.4" cy="347.5" r="1.8" fill="#e8962a"/><circle cx="246.7" cy="344.3" r="1.9" fill="#e8962a"/><circle cx="256.7" cy="361.8" r="1.8" fill="#e8962a"/><circle cx="253.5" cy="347.2" r="1.5" fill="#e8962a"/><circle cx="241.2" cy="368.0" r="1.9" fill="#e8962a"/><circle cx="254.1" cy="360.5" r="2.0" fill="#e8962a"/><circle cx="248.3" cy="363.8" r="1.2" fill="#e8962a"/><path d="M152 285C185 321 190 358 210 358" fill="none" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><path d="M275 358 L330 338" stroke="var(--head)" stroke-width="1.8" marker-end="url(#ba)"/><path d="M345 345C375 345 395 255 430 255C465 255 485 345 560 345" fill="none" stroke="#e8962a" stroke-width="3.5"/><path d="M345 352H560" stroke="var(--head)" stroke-width="2"/><text x="285" y="182" text-anchor="middle" style="font-size:14px;fill:var(--mut)">Many bootstrap samples, a distribution of estimates</text></svg><figcaption>Resampling many times lets us see how an estimate varies.</figcaption></figure>
+  <div class="eg"><span class="tag">✅ Why use it</span><br>Bootstrapping helps in avoiding overfitting and improves the stability of machine learning algorithms.</div>
   <h3 id="cv">Cross validation</h3><div class="ph">Content to be added.</div>
 </section>
 
