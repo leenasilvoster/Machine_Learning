@@ -55,6 +55,7 @@ h4{font-size:1.05rem;margin:18px 0 6px}
 .fig svg{display:block;width:100%;height:auto}
 .fig text{font-family:'Newsreader',Georgia,serif;font-size:13px;fill:var(--head)}
 .fig figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
+.qt.sm th,.qt.sm td{padding:6px 9px;text-align:center}
 .ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
 summary{cursor:pointer;font-weight:600;color:var(--head)}
@@ -185,7 +186,76 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
 </section>
 
 <section id="s4"><div class="num">4</div><h2>Backpropagation algorithm</h2>
-  <h3 id="backprop">Backpropagation algorithm</h3><div class="ph">Content to be added.</div>
+  <h3 id="backprop">Backpropagation algorithm</h3>
+  <p>Backpropagation trains a multilayer feed-forward network. For each training tuple \(X\) it propagates the inputs forward, propagates the errors backward, and then updates the weights and biases. This is repeated for every tuple until a terminating condition is satisfied.</p>
+  <h4>The algorithm</h4>
+  <ol>
+    <li><strong>Initialize</strong> all weights and biases in the network.</li>
+    <li><strong>Propagate the inputs forward.</strong> The output of an input unit is its actual input value, \(O_j=I_j\). For each hidden or output unit \(j\), compute the net input with respect to the previous layer \(i\), and then the output:
+      <div class="formula">$$I_j=\sum_iw_{ij}O_i+\theta_j,\qquad O_j=\frac{1}{1+e^{-I_j}}$$</div></li>
+    <li><strong>Backpropagate the errors.</strong> For each unit \(j\) in the output layer, where \(T_j\) is the known target value of the training tuple:
+      <div class="formula">$$Err_j=O_j(1-O_j)(T_j-O_j)$$</div>
+      For each unit \(j\) in the hidden layers, from the last to the first hidden layer, where \(w_{jk}\) is the weight from unit \(j\) to unit \(k\) in the next higher layer and \(Err_k\) is the error of unit \(k\):
+      <div class="formula">$$Err_j=O_j(1-O_j)\sum_kErr_k\,w_{jk}$$</div></li>
+    <li><strong>Update the weights and biases</strong> to reflect the propagated errors, where \(l\) is the learning rate, a constant between 0.0 and 1.0:
+      <div class="formula">$$\Delta w_{ij}=(l)\,Err_j\,O_i,\quad w_{ij}=w_{ij}+\Delta w_{ij}$$
+      $$\Delta\theta_j=(l)\,Err_j,\quad\theta_j=\theta_j+\Delta\theta_j$$</div></li>
+  </ol>
+
+  <h4>Worked example: one training step</h4>
+  <p>In the multilayer feed-forward network below, let the learning rate be \(l=0.9\). The initial weights and biases are given in the table. The activation function is the sigmoid. Show the weight and bias updates for the first training sample \(X=(1,0,1)\) with class label \(1\).</p>
+  <figure class="fig" style="max-width:420px">
+  <svg viewBox="0 0 340 200" role="img" aria-label="Network with three input units 1, 2, 3, two hidden units 4 and 5, and one output unit 6">
+   <g stroke="var(--head)" stroke-width="1.4">
+    <path d="M60 40L160 70M60 40L160 140M60 100L160 70M60 100L160 140M60 160L160 70M60 160L160 140M184 70L280 105M184 140L280 105"/>
+    <path d="M304 105H335"/>
+   </g>
+   <g fill="var(--card)" stroke="var(--head)" stroke-width="1.8"><circle cx="45" cy="40" r="16"/><circle cx="45" cy="100" r="16"/><circle cx="45" cy="160" r="16"/><circle cx="172" cy="70" r="16"/><circle cx="172" cy="140" r="16"/><circle cx="292" cy="105" r="16"/></g>
+   <g text-anchor="middle"><text x="45" y="45">1</text><text x="45" y="105">2</text><text x="45" y="165">3</text><text x="172" y="75">4</text><text x="172" y="145">5</text><text x="292" y="110">6</text></g>
+   <text x="12" y="20">x₁</text><text x="12" y="82">x₂</text><text x="12" y="142">x₃</text>
+   <text x="232" y="78">w₄₆</text><text x="232" y="150">w₅₆</text>
+  </svg>
+  <figcaption>Unit 1, 2, 3: input layer. Units 4, 5: hidden layer. Unit 6: output layer.</figcaption>
+  </figure>
+  <p>Initial input, weight and bias values:</p>
+  <div class="qw"><table class="qt sm">
+    <tr><th>\(x_1\)</th><th>\(x_2\)</th><th>\(x_3\)</th><th>\(w_{14}\)</th><th>\(w_{15}\)</th><th>\(w_{24}\)</th><th>\(w_{25}\)</th><th>\(w_{34}\)</th><th>\(w_{35}\)</th><th>\(w_{46}\)</th><th>\(w_{56}\)</th><th>\(\theta_4\)</th><th>\(\theta_5\)</th><th>\(\theta_6\)</th></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0.2</td><td>−0.3</td><td>0.4</td><td>0.1</td><td>−0.5</td><td>0.2</td><td>−0.3</td><td>−0.2</td><td>−0.4</td><td>0.2</td><td>0.1</td></tr>
+  </table></div>
+
+  <h4>1. Net input and output of each unit</h4>
+  <div class="qw"><table class="qt">
+    <tr><th>Unit \(j\)</th><th>Net input \(I_j\)</th><th>Output \(O_j\)</th></tr>
+    <tr><td>4</td><td>\(0.2+0-0.5-0.4=-0.7\)</td><td>\(1/(1+e^{0.7})=0.332\)</td></tr>
+    <tr><td>5</td><td>\(-0.3+0+0.2+0.2=0.1\)</td><td>\(1/(1+e^{-0.1})=0.525\)</td></tr>
+    <tr><td>6</td><td>\((-0.3)(0.332)-(0.2)(0.525)+0.1=-0.105\)</td><td>\(1/(1+e^{0.105})=0.474\)</td></tr>
+  </table></div>
+
+  <h4>2. Error at each unit</h4>
+  <p>Start at the output unit (target \(T_6=1\)), then use its error for the hidden units.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Unit \(j\)</th><th>\(Err_j\)</th></tr>
+    <tr><td>6</td><td>\((0.474)(1-0.474)(1-0.474)=0.1311\)</td></tr>
+    <tr><td>5</td><td>\((0.525)(1-0.525)(0.1311)(-0.2)=-0.0065\)</td></tr>
+    <tr><td>4</td><td>\((0.332)(1-0.332)(0.1311)(-0.3)=-0.0087\)</td></tr>
+  </table></div>
+
+  <h4>3. Update the weights and biases</h4>
+  <div class="qw"><table class="qt">
+    <tr><th>Weight or bias</th><th>New value</th></tr>
+    <tr><td>\(w_{46}\)</td><td>\(-0.3+(0.9)(0.1311)(0.332)=-0.261\)</td></tr>
+    <tr><td>\(w_{56}\)</td><td>\(-0.2+(0.9)(0.1311)(0.525)=-0.138\)</td></tr>
+    <tr><td>\(w_{14}\)</td><td>\(0.2+(0.9)(-0.0087)(1)=0.192\)</td></tr>
+    <tr><td>\(w_{15}\)</td><td>\(-0.3+(0.9)(-0.0065)(1)=-0.306\)</td></tr>
+    <tr><td>\(w_{24}\)</td><td>\(0.4+(0.9)(-0.0087)(0)=0.4\)</td></tr>
+    <tr><td>\(w_{25}\)</td><td>\(0.1+(0.9)(-0.0065)(0)=0.1\)</td></tr>
+    <tr><td>\(w_{34}\)</td><td>\(-0.5+(0.9)(-0.0087)(1)=-0.508\)</td></tr>
+    <tr><td>\(w_{35}\)</td><td>\(0.2+(0.9)(-0.0065)(1)=0.194\)</td></tr>
+    <tr><td>\(\theta_6\)</td><td>\(0.1+(0.9)(0.1311)=0.218\)</td></tr>
+    <tr><td>\(\theta_5\)</td><td>\(0.2+(0.9)(-0.0065)=0.194\)</td></tr>
+    <tr><td>\(\theta_4\)</td><td>\(-0.4+(0.9)(-0.0087)=-0.408\)</td></tr>
+  </table></div>
+  <div class="eg"><span class="tag">📌 Observations</span><br>The weights \(w_{24}\) and \(w_{25}\) do not change because the input \(x_2=0\), so \(Err_j\,O_i=0\). The output \(0.474\) is below the target \(1\), so the output-layer weight \(w_{46}\) and bias \(\theta_6\) move in the direction that raises the output (\(Err_6>0\)).</div>
 </section>
 
 <section id="s5"><div class="num">5</div><h2>SVM: introduction</h2>
