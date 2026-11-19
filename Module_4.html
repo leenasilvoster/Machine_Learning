@@ -45,12 +45,21 @@ h3{font-size:1.3rem;margin:28px 0 8px;scroll-margin-top:20px}
 h4{font-size:1.05rem;margin:18px 0 6px}
 .formula{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 14px;margin:14px 0;overflow-x:auto;text-align:center}
 .formula mjx-container{margin:.4em 0!important}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
+.tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:6px}
+.qw{overflow-x:auto}
+.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
+.qt th{background:var(--ac);color:#fff;padding:8px 18px;text-align:left;font-weight:600}
+.qt td{padding:8px 18px;border-bottom:1px solid var(--bd);color:var(--head)}
+.fig{background:var(--fig);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:16px auto;max-width:540px}
+.fig svg{display:block;width:100%;height:auto}
+.fig text{font-family:'Newsreader',Georgia,serif;font-size:13px;fill:var(--head)}
+.fig figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
+.qt.sm th,.qt.sm td{padding:6px 9px;text-align:center}
 .def{background:linear-gradient(135deg,var(--ac-soft),var(--card));border:1px solid var(--bd);border-left:6px solid var(--ac);border-radius:14px;padding:16px 22px 18px;margin:12px 0 14px}
 .def p{margin:0;font:600 clamp(1.1rem,2.6vw,1.4rem)/1.45 "Fraunces",Georgia,serif;color:var(--head)}
 .ask{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1.5px dashed var(--ac);border-radius:12px;padding:10px 16px;margin:0 0 14px;color:var(--head)}
 .ask b{color:var(--ac)}
-.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
-.tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:6px}
 .rem{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
 .rem div{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:12px 16px;color:var(--head)}
 .rem b{display:block;color:var(--ac);margin-bottom:2px}
@@ -59,7 +68,6 @@ h4{font-size:1.05rem;margin:18px 0 6px}
 .steps{counter-reset:st;display:grid;gap:10px;margin:12px 0;padding:0;list-style:none}
 .steps li{counter-increment:st;background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:10px;padding:10px 16px 10px 52px;position:relative}
 .steps li::before{content:counter(st);position:absolute;left:14px;top:10px;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
-.qw{overflow-x:auto}
 .cf{--ra:201,85,78;--rb:74,130,196;background:var(--fig);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:16px auto;max-width:680px;overflow-x:auto}
 .cf table{border-collapse:collapse;margin:0 auto;font-size:17px}
 .cf th{background:var(--ac);color:#fff;padding:7px 16px;font-weight:600}
@@ -74,10 +82,6 @@ h4{font-size:1.05rem;margin:18px 0 6px}
 .bg{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;font:700 12px/1 'Newsreader',serif;font-style:normal;vertical-align:middle;margin-left:4px}
 .bg.a{background:rgb(201,85,78)}.bg.b{background:rgb(74,130,196)}
 .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ac);color:#fff;font-size:14px;margin-right:6px}
-.fig{background:var(--fig);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:16px auto;max-width:540px}
-.fig svg{display:block;width:100%;height:auto}
-.fig text{font-family:'Newsreader',Georgia,serif;font-size:16px;fill:var(--head)}
-.fig figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
 .alg{background:var(--fig);border:1px solid var(--bd);border-top:3px solid var(--head);border-bottom:3px solid var(--head);padding:8px 16px;margin:16px 0;overflow-x:auto}
 .alg .t{font-weight:600;color:var(--head);border-bottom:1px solid var(--bd);padding:2px 0 8px;margin-bottom:6px}
 .alg .l{display:grid;grid-template-columns:28px max-content;gap:8px;padding:3px 0;font-size:17px;white-space:nowrap}
@@ -85,9 +89,6 @@ h4{font-size:1.05rem;margin:18px 0 6px}
 .alg .i1{padding-left:20px}.alg .i2{padding-left:40px}
 .alg .c{color:var(--mut);font:13px 'JetBrains Mono',monospace;margin-left:10px}
 .alg .cm{display:block;color:var(--mut);font:13px 'JetBrains Mono',monospace;padding:2px 0 0 36px}
-.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
-.qt th{background:var(--ac);color:#fff;padding:8px 22px;text-align:left;font-weight:600}
-.qt td{padding:8px 22px;border-bottom:1px solid var(--bd);color:var(--head)}
 .ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
 summary{cursor:pointer;font-weight:600;color:var(--head)}
@@ -132,7 +133,50 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
 </div>
 
 <section id="s1"><div class="num">1</div><h2>Similarity measures</h2>
-  <h3 id="sim">Similarity measures</h3><div class="ph">Content to be added.</div>
+  <h3 id="clust">Clustering</h3>
+  <div class="def"><p>Clustering, or cluster analysis, is a machine learning technique that groups an unlabelled dataset.</p></div>
+  <p>Clustering is a way of grouping data points into different clusters, each consisting of similar data points. Objects in the same cluster are highly similar to one another, and have little or no similarity to objects in another cluster.</p>
+  <div class="eg"><span class="tag">📌 Key idea</span><br>The data has no class labels, so clustering is <strong>unsupervised</strong>. To decide which points belong together, we first need a precise meaning of “similar”. That is the job of a similarity (or distance) measure.</div>
+
+  <h3 id="sim">Similarity measures</h3>
+  <p>Let \(x=(x_1,\dots,x_k)\) and \(y=(y_1,\dots,y_k)\) be two points with \(k\) features. The three most common distance measures are:</p>
+  <div class="rem">
+    <div style="grid-column:1/-1"><b>Euclidean distance</b>
+      <div class="formula" style="margin:6px 0 0">$$d(x,y)=\sqrt{\sum_{i=1}^{k}(x_i-y_i)^2}$$</div></div>
+    <div style="grid-column:1/-1"><b>Manhattan distance</b>
+      <div class="formula" style="margin:6px 0 0">$$d(x,y)=\sum_{i=1}^{k}|x_i-y_i|$$</div></div>
+    <div style="grid-column:1/-1"><b>Minkowski distance</b>
+      <div class="formula" style="margin:6px 0 0">$$d(x,y)=\left(\sum_{i=1}^{k}|x_i-y_i|^{q}\right)^{1/q}$$</div></div>
+  </div>
+  <div class="eg"><span class="tag">🔗 Special cases</span><br>Minkowski distance with \(q=1\) is the Manhattan distance, and with \(q=2\) it is the Euclidean distance. As \(q\to\infty\) it becomes the Chebychev distance below.</div>
+
+  <h4>Other measures</h4>
+  <div class="qw"><table class="qt">
+    <tr><th>Measure</th><th>Formula</th></tr>
+    <tr><td>Squared Euclidean</td><td>\(\displaystyle\sum_i(x_i-y_i)^2\)</td></tr>
+    <tr><td>Canberra</td><td>\(\displaystyle\sum_i\frac{|x_i-y_i|}{|x_i+y_i|}\)</td></tr>
+    <tr><td>Chebychev</td><td>\(\displaystyle\max_i|x_i-y_i|\)</td></tr>
+    <tr><td>Bray–Curtis</td><td>\(\displaystyle\frac{\sum_i|x_i-y_i|}{\sum_i(x_i+y_i)}\)</td></tr>
+    <tr><td>Cosine correlation</td><td>\(\displaystyle\frac{\sum_ix_iy_i}{\sqrt{\sum_ix_i^2}\sqrt{\sum_iy_i^2}}\)</td></tr>
+    <tr><td>Pearson correlation</td><td>\(\displaystyle\frac{\sum_i(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_i(x_i-\bar{x})^2}\sqrt{\sum_i(y_i-\bar{y})^2}}\)</td></tr>
+    <tr><td>Uncentered Pearson correlation</td><td>\(\displaystyle\frac{\sum_ix_iy_i}{\sqrt{\sum_ix_i^2}\sqrt{\sum_iy_i^2}}\)</td></tr>
+  </table></div>
+  <div class="eg"><span class="tag">💡 Distance or similarity?</span><br>For the distance measures, a <strong>small</strong> value means the points are similar. The three correlation measures are <strong>similarities</strong>: a value close to \(+1\) means similar. A correlation \(r\) can be turned into a distance with \(1-r\). The uncentered Pearson correlation has the same formula as the cosine correlation, since it does not subtract the means.</div>
+
+  <h4>Worked example</h4>
+  <p>Take \(x=(1,2,3)\) and \(y=(2,4,6)\). The differences \(x_i-y_i\) are \(-1,-2,-3\).</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Measure</th><th>Calculation</th><th>Value</th></tr>
+    <tr><td>Euclidean</td><td>\(\sqrt{1+4+9}\)</td><td>\(\sqrt{14}\approx3.74\)</td></tr>
+    <tr><td>Squared Euclidean</td><td>\(1+4+9\)</td><td>14</td></tr>
+    <tr><td>Manhattan</td><td>\(1+2+3\)</td><td>6</td></tr>
+    <tr><td>Chebychev</td><td>\(\max(1,2,3)\)</td><td>3</td></tr>
+    <tr><td>Canberra</td><td>\(\tfrac13+\tfrac26+\tfrac39\)</td><td>1</td></tr>
+    <tr><td>Bray–Curtis</td><td>\(\tfrac{6}{6+12}\)</td><td>\(\tfrac13\approx0.33\)</td></tr>
+    <tr><td>Cosine correlation</td><td>\(\tfrac{2+8+18}{\sqrt{14}\sqrt{56}}=\tfrac{28}{28}\)</td><td>1</td></tr>
+    <tr><td>Pearson correlation</td><td>\(\bar{x}=2,\ \bar{y}=4:\ \tfrac{(-1)(-2)+0+(1)(2)}{\sqrt2\sqrt8}=\tfrac44\)</td><td>1</td></tr>
+  </table></div>
+  <div class="eg"><span class="tag">🤔 Notice</span><br>The distances say that \(x\) and \(y\) are some way apart, but both correlation measures give exactly 1. This is because \(y=2x\): the two points point in the same direction and differ only in size. Correlation-type measures ignore magnitude, while distance measures do not. Choose the measure that matches what “similar” should mean for your data.</div>
 </section>
 
 <section id="s2"><div class="num">2</div><h2>Hierarchical agglomerative clustering</h2>
