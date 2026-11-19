@@ -51,6 +51,10 @@ h4{font-size:1.05rem;margin:18px 0 6px}
 .qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
 .qt th{background:var(--ac);color:#fff;padding:8px 18px;text-align:left;font-weight:600}
 .qt td{padding:8px 18px;border-bottom:1px solid var(--bd);color:var(--head)}
+.fig{background:var(--fig);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:16px auto;max-width:540px}
+.fig svg{display:block;width:100%;height:auto}
+.fig text{font-family:'Newsreader',Georgia,serif;font-size:13px;fill:var(--head)}
+.fig figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
 .ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
 details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
 summary{cursor:pointer;font-weight:600;color:var(--head)}
@@ -99,6 +103,77 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
 
 <section id="s1"><div class="num">1</div><h2>Perceptron</h2>
   <h3 id="perceptron">Perceptron</h3><div class="ph">Content to be added.</div>
+  <h4>Worked example: output of a single neuron</h4>
+  <p>Consider a neuron with 4 inputs. The weights of the edges connecting the inputs are \(1, 2, 3, 4\) and the inputs are \(2, 3, 1, 4\). The bias of the node is zero. If the activation function is linear, \(f(x)=2x\), compute the output of the neuron.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Input</th><th>Value</th><th>Weight</th></tr>
+    <tr><td>\(x_1\)</td><td>2</td><td>\(w_1=1\)</td></tr>
+    <tr><td>\(x_2\)</td><td>3</td><td>\(w_2=2\)</td></tr>
+    <tr><td>\(x_3\)</td><td>1</td><td>\(w_3=3\)</td></tr>
+    <tr><td>\(x_4\)</td><td>4</td><td>\(w_4=4\)</td></tr>
+    <tr><td>bias</td><td>1</td><td>\(w_0=0\)</td></tr>
+  </table></div>
+  <div class="eg"><span class="tag">📌 Idea</span><br>A neuron works in two steps. First it adds up the weighted inputs (the net input). Then it passes that sum through the activation function.</div>
+
+  <h4>1. Net input</h4>
+  <div class="formula">$$\text{net}=\sum_{i=0}^{4}w_ix_i=w_0x_0+w_1x_1+w_2x_2+w_3x_3+w_4x_4$$
+  $$=0+(1)(2)+(2)(3)+(3)(1)+(4)(4)=2+6+3+16=\boxed{27}$$</div>
+
+  <h4>2. Apply the activation function</h4>
+  <p>The activation function is \(f(x)=2x\), so the output is</p>
+  <div class="formula">$$y=f(\text{net})=2\times27=\boxed{54}$$</div>
+  <div class="eg"><span class="tag">⚠️ Common mistake</span><br>The value 27 is only the <strong>net input</strong>. The question asks for the <strong>output</strong> of the neuron, so the activation function must be applied. The answer is 54, not 27.</div>
+
+  <h4>Worked example: neuron with a step activation</h4>
+  <p>A neuron has three inputs \(x_1,x_2,x_3\) with weights \(w_1=2\), \(w_2=-4\) and \(w_3=1\). Its activation function is the step function</p>
+  <div class="formula">$$\varphi(v)=\begin{cases}1 & \text{if } v\ge0\\0 & \text{otherwise}\end{cases}$$</div>
+  <p>Calculate the output value \(y\) for the following input patterns.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Pattern</th><th>\(P_1\)</th><th>\(P_2\)</th><th>\(P_3\)</th><th>\(P_4\)</th></tr>
+    <tr><td>\(x_1\)</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+    <tr><td>\(x_2\)</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr><td>\(x_3\)</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+  </table></div>
+  <h4>1. Net input for each pattern</h4>
+  <p>Use \(v=w_1x_1+w_2x_2+w_3x_3=2x_1-4x_2+x_3\).</p>
+  <div class="formula">$$\begin{aligned}
+  P_1&:\ 2(1)-4(0)+1(0)=2\\
+  P_2&:\ 2(0)-4(1)+1(1)=-3\\
+  P_3&:\ 2(1)-4(0)+1(1)=3\\
+  P_4&:\ 2(1)-4(1)+1(1)=-1
+  \end{aligned}$$</div>
+  <h4>2. Apply the step function</h4>
+  <p>The output is 1 when \(v\ge0\) and 0 otherwise.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Pattern</th><th>\(P_1\)</th><th>\(P_2\)</th><th>\(P_3\)</th><th>\(P_4\)</th></tr>
+    <tr><td>Net input \(v\)</td><td>2</td><td>−3</td><td>3</td><td>−1</td></tr>
+    <tr><td>Output \(y=\varphi(v)\)</td><td><strong>1</strong></td><td><strong>0</strong></td><td><strong>1</strong></td><td><strong>0</strong></td></tr>
+  </table></div>
+
+  <h4>Worked example: neuron with a binary sigmoid activation</h4>
+  <p>Calculate the output \(y\) of a 3-input neuron with bias \(b\). The input vector is \((x_1,x_2,x_3)=(0.8,\,0.6,\,0.4)\) and the weight values are \((w_1,w_2,w_3,b)=(0.2,\,0.1,\,-0.3,\,0.35)\). Use the binary sigmoid as the activation function:</p>
+  <div class="formula">$$f(x)=\frac{1}{1+e^{-x}}$$</div>
+  <h4>1. Net input</h4>
+  <p>The bias is added to the weighted sum of the inputs.</p>
+  <div class="formula">$$\begin{aligned}\text{net}&=b+w_1x_1+w_2x_2+w_3x_3\\&=0.35+(0.2)(0.8)+(0.1)(0.6)+(-0.3)(0.4)\\&=0.35+0.16+0.06-0.12\\&=\boxed{0.45}\end{aligned}$$</div>
+  <h4>2. Apply the sigmoid</h4>
+  <div class="formula">$$y=f(0.45)=\frac{1}{1+e^{-0.45}}=\frac{1}{1+0.6376}\approx\boxed{0.6106}$$</div>
+  <div class="eg"><span class="tag">📌 Note</span><br>The binary sigmoid squashes any net input into the range \((0,1)\). A net input of 0 would give exactly 0.5, so a positive net input such as 0.45 gives an output slightly above 0.5.</div>
+
+  <h4>Worked example: sigmoid neuron with a bias input of 1</h4>
+  <p>A neuron \(y\) receives the inputs \(x_1=0.6\), \(x_2=0.5\) and \(x_3=0.8\) through the weights \(0.3\), \(0.7\) and \(0.5\). It also has a bias input of \(1\) with weight \(0.1\). Use the sigmoid as the activation function and find the output.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Input</th><th>Value</th><th>Weight</th></tr>
+    <tr><td>\(x_1\)</td><td>0.6</td><td>0.3</td></tr>
+    <tr><td>\(x_2\)</td><td>0.5</td><td>0.7</td></tr>
+    <tr><td>\(x_3\)</td><td>0.8</td><td>0.5</td></tr>
+    <tr><td>bias</td><td>1</td><td>0.1</td></tr>
+  </table></div>
+  <h4>1. Net input</h4>
+  <div class="formula">$$\begin{aligned}\text{net}&=(0.6)(0.3)+(0.5)(0.7)+(0.8)(0.5)+(1)(0.1)\\&=0.18+0.35+0.40+0.10\\&=\boxed{1.03}\end{aligned}$$</div>
+  <h4>2. Apply the sigmoid</h4>
+  <div class="formula">$$y=\frac{1}{1+e^{-1.03}}=\frac{1}{1+0.3570}\approx\boxed{0.737}$$</div>
+  <div class="eg"><span class="tag">📌 Tip</span><br>When a bias is drawn as an extra input fixed at 1, treat it like any other input: multiply it by its weight and add it to the sum.</div>
 </section>
 
 <section id="s2"><div class="num">2</div><h2>Multilayer feed-forward network</h2>
@@ -114,13 +189,347 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
 </section>
 
 <section id="s5"><div class="num">5</div><h2>SVM: introduction</h2>
-  <h3 id="svmintro">Introduction</h3><div class="ph">Content to be added.</div>
+  <h3 id="svmintro">Introduction</h3>
+  <h4>Example to understand the Support Vector Machine</h4>
+  <p>Consider the following dataset, which helps to decide whether tennis is played on a particular day based on temperature and humidity. Each day is a point \((x,y)\) with \(x=\) temperature and \(y=\) humidity.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Temperature</th><th>Humidity</th><th>Play</th><th>\(5x+2y-535\)</th></tr>
+    <tr><td>85</td><td>85</td><td>no</td><td>+60</td></tr>
+    <tr><td>60</td><td>70</td><td>yes</td><td>−95</td></tr>
+    <tr><td>80</td><td>90</td><td>no</td><td>+45</td></tr>
+    <tr><td>72</td><td>95</td><td>no</td><td>+15</td></tr>
+    <tr><td>68</td><td>80</td><td>yes</td><td>−35</td></tr>
+    <tr><td>74</td><td>73</td><td>yes</td><td>−19</td></tr>
+    <tr><td>69</td><td>70</td><td>yes</td><td>−50</td></tr>
+    <tr><td>75</td><td>85</td><td>no</td><td>+10</td></tr>
+    <tr><td>83</td><td>78</td><td>no</td><td>+36</td></tr>
+  </table></div>
+  <p>If we plot the data, with a filled square for <em>yes</em> and a hollow circle for <em>no</em>, we can draw a straight line in the plane so that all the filled squares are on one side and all the hollow circles are on the other. Such a line is called a <strong>separating line</strong> for the data. One separating line for this data is</p>
+  <div class="formula">$$5x+2y-535=0$$</div>
+  <p>It has the following property:</p>
+  <ul>
+    <li>If a day has the value <em>yes</em> for play (filled square), then \(5x+2y-535<0\).</li>
+    <li>If a day has the value <em>no</em> for play (hollow circle), then \(5x+2y-535>0\).</li>
+  </ul>
+  <p>The last column of the table confirms this: every <em>yes</em> day is negative and every <em>no</em> day is positive.</p>
+  <div class="eg"><span class="tag">📌 Linearly separable</span><br>If such a separating line exists for a given dataset, the data is said to be <strong>linearly separable</strong>.</div>
+
+  <h4>Which separating line is best?</h4>
+  <p>There can be several separating lines. Deciding which one to choose becomes the problem. To choose the “best” line we introduce the <strong>margin of a separating line</strong>. Given a separating line, consider the perpendicular distances of the data points from it. The double of the shortest perpendicular distance is called the <strong>margin of the separating line</strong>.</p>
 </section>
 
 <section id="s6"><div class="num">6</div><h2>Maximum margin classification</h2>
-  <h3 id="mmc">Maximum Margin Classification</h3><div class="ph">Content to be added.</div>
-  <h3 id="mmmath">Mathematics behind Maximum Margin Classification</h3><div class="ph">Content to be added.</div>
+  <h3 id="mmc">Maximum Margin Classification</h3>
+  <p><strong>The “best” separating line is the one with the maximum margin.</strong> It is called the <strong>maximum margin line</strong> or the <strong>optimal separating line</strong>. This line is also called the <strong>support vector machine</strong> for the data. For the tennis data its equation is</p>
+  <div class="formula">$$7x+6y-995.5=0$$</div>
+  <p>Finding the equation of the maximum margin line is not a trivial problem. The data points closest to the maximum margin line are called the <strong>support vectors</strong>. Here they are</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Support vector</th><th>Temperature</th><th>Humidity</th><th>Play</th><th>\(7x+6y-995.5\)</th></tr>
+    <tr><td>1</td><td>68</td><td>80</td><td>yes</td><td>−39.5</td></tr>
+    <tr><td>2</td><td>74</td><td>73</td><td>yes</td><td>−39.5</td></tr>
+    <tr><td>3</td><td>75</td><td>85</td><td>no</td><td>+39.5</td></tr>
+  </table></div>
+  <p>All three are equally far from the line, and every other point is further away. For example \((60,70)\) gives \(-155.5\) and \((85,85)\) gives \(+109.5\).</p>
+  <figure class="fig" style="max-width:420px">
+  <svg viewBox="0 0 300 305" role="img" aria-label="Tennis data with the maximum margin line 7x+6y=995.5, three support vectors, and two dashed parallel lines forming a road between the classes">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M40 260H275"/><path d="M40 20V260"/></g>
+   <path d="M70.8 71.5L216 241M84 29L216 183" stroke="var(--ac)" stroke-width="1.2" stroke-dasharray="5 4"/>
+   <path d="M70.8 42.6L216 212" stroke="var(--head)" stroke-width="2.2"/>
+   <g fill="var(--head)"><rect x="79" y="167" width="10" height="10"/><rect x="114.2" y="123" width="10" height="10"/><rect x="140.6" y="153.8" width="10" height="10"/><rect x="118.6" y="167" width="10" height="10"/></g>
+   <g fill="none" stroke="var(--head)" stroke-width="1.6"><circle cx="194" cy="106" r="5"/><circle cx="172" cy="84" r="5"/><circle cx="136.8" cy="62" r="5"/><circle cx="150" cy="106" r="5"/><circle cx="185.2" cy="136.8" r="5"/></g>
+   <text x="62" y="123" style="font-size:12px">SV 1</text><text x="154" y="173" style="font-size:12px">SV 2</text><text x="156" y="101" style="font-size:12px">SV 3</text>
+   <text x="150" y="276" style="font-size:12px">Temperature</text><text x="46" y="16" style="font-size:12px">Humidity</text>
+   <text x="200" y="232" style="font-size:12px">7x+6y−995.5=0</text>
+   <rect x="75" y="289" width="10" height="10" fill="var(--head)"/><text x="91" y="298">yes</text>
+   <circle cx="150" cy="294" r="5" fill="none" stroke="var(--head)" stroke-width="1.6"/><text x="161" y="298">no</text>
+  </svg>
+  <figcaption>The solid line is the maximum margin line. The dashed lines pass through the support vectors, and the region between them is the “road”.</figcaption>
+  </figure>
+
+  <h4>Decision rule</h4>
+  <p>Let \(x\) and \(y\) be the temperature and humidity on a given day. Then the decision as to whether to play tennis on that day is</p>
+  <div class="formula">$$\text{“yes” if }7x+6y-995.5<0,\qquad\text{“no” if }7x+6y-995.5>0$$</div>
+
+  <h4>The “road” of maximum width</h4>
+  <p>Draw a line through support vectors 1 and 2 parallel to the maximum margin line, and a line through support vector 3 parallel to it. These are the dashed lines in the figure. The region between them can be thought of as a <strong>road</strong> or <strong>street</strong> of maximum width that separates the <em>yes</em> points from the <em>no</em> points. The width of this road is the margin, \(2\times\dfrac{39.5}{\sqrt{7^2+6^2}}=\dfrac{79}{\sqrt{85}}\approx8.57\).</p>
+  <div class="eg"><span class="tag">🔗 Link to \(f(x)=\pm1\)</span><br>Dividing \(7x+6y-995.5\) by \(39.5\) gives a score of exactly \(-1\), \(-1\) and \(+1\) at the three support vectors. This is the scaling used in the optimization problem below, where the support vectors satisfy \(y_i(w^Tx_i-b)=1\). Here the labels are \(y=-1\) for <em>yes</em> and \(y=+1\) for <em>no</em>.</div>
+
+  <h4>In general: lines and hyperplanes</h4>
+  <p>Any line given by an equation of the form \(ax+by+c=0\) separates the coordinate plane into two halves. One half consists of all points for which \(ax+by+c>0\) and the other half consists of all points for which \(ax+by+c<0\). Which half is which depends on the signs of the coefficients \(a,b,c\). For the tennis line \(5x+2y-535=0\), the point \((60,70)\) gives \(-95<0\) and the point \((85,85)\) gives \(+60>0\), so they lie in different halves.</p>
+  <p>Hyperplanes are subsets of finite-dimensional vector spaces that are similar to straight lines in a plane and planes in three-dimensional space. Consider the \(n\)-dimensional vector space \(\mathbb{R}^n\). The set of all vectors \(\vec{x}=(x_1,x_2,\ldots,x_n)\) whose components satisfy an equation of the form</p>
+  <div class="formula">$$w_0+w_1x_1+w_2x_2+\cdots+w_nx_n=0\tag{3.1}$$</div>
+  <p>where \(w_0,w_1,\ldots,w_n\) are scalars, is called a <strong>hyperplane</strong> in \(\mathbb{R}^n\). Let \(\vec{w}=(w_1,\ldots,w_n)\). Using the inner product, Eq. (3.1) can be written as</p>
+  <div class="formula">$$w_0+\vec{w}\cdot\vec{x}=0\tag{3.2}$$</div>
+  <p>The hyperplane divides \(\mathbb{R}^n\) into two disjoint halves. One half consists of all vectors \(\vec{x}\) for which \(w_0+w_1x_1+\cdots+w_nx_n>0\), and the other half consists of all vectors for which \(w_0+w_1x_1+\cdots+w_nx_n<0\).</p>
+
+  <h4>Linearly separable data</h4>
+  <p>Consider a two-class dataset with \(n\) numeric features and two possible class labels, \(-1\) and \(+1\). Let the vector \(\vec{x}=(x_1,\ldots,x_n)\) represent the feature values of one instance. The dataset is <strong>linearly separable</strong> if we can find a hyperplane in \(\mathbb{R}^n\), say</p>
+  <div class="formula">$$w_0+w_1x_1+w_2x_2+\cdots+w_nx_n=0\tag{3.3}$$</div>
+  <p>with the following two properties:</p>
+  <ol>
+    <li>For each instance \(\vec{x}\) with class label \(-1\): \(\;w_0+w_1x_1+\cdots+w_nx_n<0\).</li>
+    <li>For each instance \(\vec{x}\) with class label \(+1\): \(\;w_0+w_1x_1+\cdots+w_nx_n>0\).</li>
+  </ol>
+  <p>A hyperplane given by Eq. (3.3) with these two properties is called a <strong>separating hyperplane</strong> for the dataset.</p>
+  <div class="eg"><span class="tag">📌 Notation</span><br>The source notes write the coefficients as \(\alpha_0,\alpha_1,\ldots,\alpha_n\). Here they are written \(w_0,w_1,\ldots,w_n\) so that they are not confused with the Lagrange multipliers \(\alpha_i\) used later. In the \(f(x)=w^Tx-b\) convention of the optimization section, \(w_0=-b\). The equations are numbered (3.1) to (3.3) for Module 3; they correspond to Eq. (10.5) to (10.7) in the source.</div>
+
+  <h4>Optimal separating hyperplane (maximal margin hyperplane)</h4>
+  <p>If a dataset with two class labels is linearly separable, then in general there will be several separating hyperplanes for it. Consider a linearly separable dataset with class labels \(-1\) and \(+1\), and a separating hyperplane \(H\) for the dataset.</p>
+  <ol>
+    <li>Consider the perpendicular distances from the training instances to \(H\), and the smallest such distance. <strong>The double of this smallest distance is called the margin of \(H\).</strong></li>
+    <li>The hyperplane for which the margin is the largest is called the <strong>maximal margin hyperplane</strong> (also called the <em>maximum margin hyperplane</em>) or the <strong>optimal separating hyperplane</strong>.</li>
+    <li>The maximal margin hyperplane is also called the <strong>support vector machine</strong> for the dataset.</li>
+    <li>The data points that lie closest to the maximal margin hyperplane are called the <strong>support vectors</strong>.</li>
+  </ol>
+  <h3 id="mmmath">Mathematics behind Maximum Margin Classification</h3>
+  <h4>SVM as an optimization problem</h4>
+  <p>Given a two-class linearly separable dataset \(\{(x_i,y_i)\}_{i=1}^{N}\), where each \(y_i\) is \(+1\) or \(-1\), find \(w\) and \(b\) by solving</p>
+  <div class="formula">$$\begin{aligned}\underset{w,b}{\operatorname{minimize}}\quad&\frac12\lVert w\rVert^2\\\text{subject to}\quad&y_i(w^Tx_i-b)\ge1,\qquad i=1,\ldots,N.\end{aligned}$$</div>
+  <div class="eg"><span class="tag">📌 Meaning</span><br>The constraints say that every training point is on the correct side of the hyperplane and at least a distance of \(1/\lVert w\rVert\) from it. The margin width is \(2/\lVert w\rVert\), so minimizing \(\tfrac12\lVert w\rVert^2\) makes the margin as wide as possible.</div>
+
+  <h4>Step 1: solve the dual problem</h4>
+  <p>Find \(\alpha=(\alpha_1,\ldots,\alpha_N)\) that maximizes</p>
+  <div class="formula">$$\Phi(\alpha)=\sum_{i=1}^{N}\alpha_i-\frac12\sum_{i=1}^{N}\sum_{j=1}^{N}\alpha_i\alpha_jy_iy_j\,(x_i\cdot x_j)$$</div>
+  <p>subject to</p>
+  <div class="formula">$$\sum_{i=1}^{N}\alpha_iy_i=0,\qquad\alpha_i\ge0$$</div>
+
+  <h4>Step 2: compute the weight vector</h4>
+  <div class="formula">$$w=\sum_{i=1}^{N}\alpha_iy_ix_i$$</div>
+
+  <h4>Step 3: compute the threshold</h4>
+  <div class="formula">$$b=\frac12\left[\min_{i:\,y_i=+1}(w^Tx_i)+\max_{i:\,y_i=-1}(w^Tx_i)\right]$$</div>
+  <p>This places the hyperplane midway between the closest positive point and the closest negative point.</p>
+
+  <h4>Step 4: classify</h4>
+  <p>Use the decision score \(f(x)=w^Tx-b\). Its sign gives the predicted class. A training point with a nonzero dual coefficient \(\alpha_i\) is a <strong>support vector</strong>.</p>
+  <div class="eg"><span class="tag">⚠️ Sign convention</span><br>Here the hyperplane is written \(w^Tx-b=0\), so \(b\) is subtracted. In the worked examples below, the hyperplane is written \(w^Tx+b=0\). The two \(b\) values differ only in sign. For example, \(x_1-2=0\) has \(b=2\) in this convention and \(b=-2\) in the other.</div>
+
+  <h4>Worked example: SVM with two training points</h4>
+  <p>Using the SVM algorithm above, find the classifier for the following data.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Example</th><th>First coordinate</th><th>Second coordinate</th><th>Class</th></tr>
+    <tr><td>1</td><td>2</td><td>1</td><td>\(+1\)</td></tr>
+    <tr><td>2</td><td>4</td><td>3</td><td>\(-1\)</td></tr>
+  </table></div>
+  <figure class="fig" style="max-width:420px">
+  <svg viewBox="0 0 300 235" role="img" aria-label="One positive point at (2,1), one negative point at (4,3), and the hyperplane x1+x2=5 midway between them">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M20 190H285"/><path d="M40 5V200"/></g>
+   <path d="M40 85L145 190M110 15L250 155" stroke="var(--ac)" stroke-width="1.2" stroke-dasharray="5 4"/>
+   <path d="M40 15L215 190" stroke="var(--head)" stroke-width="2.2"/>
+   <circle cx="110" cy="155" r="6" fill="#2e9e4f"/><circle cx="180" cy="85" r="6" fill="#d6249f"/>
+   <text x="118" y="170">(2, 1)</text><text x="188" y="80">(4, 3)</text>
+   <text x="58" y="30">hyperplane</text><text x="268" y="184">x₁</text><text x="46" y="14">x₂</text>
+   <circle cx="90" cy="222" r="6" fill="#2e9e4f"/><text x="102" y="227">+1</text>
+   <circle cx="170" cy="222" r="6" fill="#d6249f"/><text x="182" y="227">−1</text>
+  </svg>
+  <figcaption>The hyperplane \(x_1+x_2=5\) lies midway between the two points. The dashed lines are the margin boundaries.</figcaption>
+  </figure>
+
+  <h4>Step 1: solve the dual problem</h4>
+  <p>The dot products are \(x_1\cdot x_1=5\), \(x_1\cdot x_2=11\) and \(x_2\cdot x_2=25\). Since \(y_1y_2=-1\), the cross term is negative:</p>
+  <div class="formula">$$\Phi(\alpha)=(\alpha_1+\alpha_2)-\frac12\left(5\alpha_1^2-22\alpha_1\alpha_2+25\alpha_2^2\right)$$</div>
+  <p>The constraint \(\alpha_1y_1+\alpha_2y_2=0\) gives \(\alpha_1-\alpha_2=0\). Set \(\alpha_1=\alpha_2=a\). Then</p>
+  <div class="formula">$$\Phi(a)=2a-4a^2,\qquad\frac{d\Phi}{da}=2-8a=0\;\Rightarrow\;\boxed{\alpha_1=\alpha_2=\tfrac14}$$</div>
+
+  <h4>Step 2: weight vector</h4>
+  <div class="formula">$$w=\tfrac14(+1)\begin{bmatrix}2\\1\end{bmatrix}+\tfrac14(-1)\begin{bmatrix}4\\3\end{bmatrix}=\begin{bmatrix}-\tfrac12\\-\tfrac12\end{bmatrix}$$</div>
+
+  <h4>Step 3: threshold</h4>
+  <div class="formula">$$b=\frac12\left(w\cdot(2,1)+w\cdot(4,3)\right)=\frac12\left(-\frac32-\frac72\right)=-\frac52$$</div>
+
+  <h4>Step 4: decision score</h4>
+  <div class="formula">$$f(x)=w^Tx-b=-\tfrac12x_1-\tfrac12x_2+\tfrac52=-\tfrac12(x_1+x_2-5)$$</div>
+
+  <h4>Step 5: hyperplane</h4>
+  <p>Set \(f(x)=0\) to obtain the maximum-margin hyperplane:</p>
+  <div class="formula">$$\boxed{x_1+x_2-5=0}$$</div>
+  <div class="eg"><span class="tag">✅ Check</span><br>\(f(2,1)=-\tfrac32+\tfrac52=+1\) and \(f(4,3)=-\tfrac72+\tfrac52=-1\), so both points lie exactly on the margin. A point is class \(+1\) when \(x_1+x_2<5\) and class \(-1\) when \(x_1+x_2>5\). The margin width is \(2/\lVert w\rVert=2\sqrt2\), which equals the distance between the two points. Both \(\alpha_i\) are non-zero, so both points are support vectors.</div>
+  <div class="eg"><span class="tag">🧭 Geometric view</span><br>With one point per class, the maximum margin hyperplane is the <strong>perpendicular bisector</strong> of the segment joining the two points. The midpoint of \((2,1)\) and \((4,3)\) is \((3,2)\), and it lies on the hyperplane because \(3+2-5=0\). The direction \((2,2)\) between the points is parallel to \(w=(-\tfrac12,-\tfrac12)\), so the hyperplane is perpendicular to that segment.</div>
+
+  <h4>Worked example: SVM with three training points</h4>
+  <p>Using the SVM algorithm, find the classifier for the following data.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Example</th><th>\(x_1\)</th><th>\(x_2\)</th><th>Class</th></tr>
+    <tr><td>1</td><td>2</td><td>2</td><td>\(-1\)</td></tr>
+    <tr><td>2</td><td>4</td><td>5</td><td>\(+1\)</td></tr>
+    <tr><td>3</td><td>7</td><td>4</td><td>\(+1\)</td></tr>
+  </table></div>
+  <figure class="fig" style="max-width:420px">
+  <svg viewBox="0 0 300 235" role="img" aria-label="Negative point at (2,2), positive points at (4,5) and (7,4), and the hyperplane 4x1+6x2=33 with its margin lines">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M20 190H290"/><path d="M30 5V200"/></g>
+   <path d="M30 90L180 190M105 10L270 120" stroke="var(--ac)" stroke-width="1.2" stroke-dasharray="5 4"/>
+   <path d="M30 25L277 190" stroke="var(--head)" stroke-width="2.2"/>
+   <circle cx="90" cy="130" r="6" fill="#d6249f"/><circle cx="150" cy="40" r="6" fill="#2e9e4f"/><circle cx="240" cy="70" r="6" fill="#2e9e4f"/>
+   <g fill="none" stroke="var(--head)" stroke-width="2"><circle cx="90" cy="130" r="11"/><circle cx="150" cy="40" r="11"/></g>
+   <text x="98" y="148">(2, 2)</text><text x="160" y="36">(4, 5)</text><text x="248" y="66">(7, 4)</text>
+   <text x="200" y="168">hyperplane</text><text x="276" y="184">x₁</text><text x="36" y="14">x₂</text>
+   <circle cx="70" cy="222" r="6" fill="#2e9e4f"/><text x="82" y="227">+1</text>
+   <circle cx="130" cy="222" r="6" fill="#d6249f"/><text x="142" y="227">−1</text>
+   <circle cx="195" cy="222" r="8" fill="none" stroke="var(--head)" stroke-width="2"/><text x="209" y="227">SV</text>
+  </svg>
+  <figcaption>Only points 1 and 2 touch the margin. Point 3 lies further out, so it is not a support vector.</figcaption>
+  </figure>
+
+  <h4>Step 1: solve the dual problem</h4>
+  <p>Here \(N=3\), with \(\vec{x}_1=(2,2)\), \(y_1=-1\); \(\vec{x}_2=(4,5)\), \(y_2=+1\); \(\vec{x}_3=(7,4)\), \(y_3=+1\); and \(\vec\alpha=(\alpha_1,\alpha_2,\alpha_3)\). The dot products \(\vec{x}_i\cdot\vec{x}_j\) are</p>
+  <div class="qw"><table class="qt">
+    <tr><th>\(\cdot\)</th><th>\(\vec{x}_1\)</th><th>\(\vec{x}_2\)</th><th>\(\vec{x}_3\)</th></tr>
+    <tr><td>\(\vec{x}_1\)</td><td>8</td><td>18</td><td>22</td></tr>
+    <tr><td>\(\vec{x}_2\)</td><td>18</td><td>41</td><td>48</td></tr>
+    <tr><td>\(\vec{x}_3\)</td><td>22</td><td>48</td><td>65</td></tr>
+  </table></div>
+  <p>The objective is</p>
+  <div class="formula">$$\Phi(\vec\alpha)=\sum_{i=1}^{3}\alpha_i-\frac12\sum_{i=1}^{3}\sum_{j=1}^{3}\alpha_i\alpha_jy_iy_j\,(\vec{x}_i\cdot\vec{x}_j)$$</div>
+  <p>The label products are \(y_1y_2=y_1y_3=-1\) and \(y_2y_3=+1\). Substituting the dot products and simplifying gives</p>
+  <div class="formula">$$\Phi(\vec\alpha)=(\alpha_1+\alpha_2+\alpha_3)-\tfrac12\left[8\alpha_1^2+41\alpha_2^2+65\alpha_3^2-36\alpha_1\alpha_2-44\alpha_1\alpha_3+96\alpha_2\alpha_3\right]$$</div>
+  <p>We also have \(\sum_{i=1}^{3}\alpha_iy_i=-\alpha_1+\alpha_2+\alpha_3\). So the problem is to find \(\vec\alpha=(\alpha_1,\alpha_2,\alpha_3)\) that maximizes \(\Phi(\vec\alpha)\) subject to</p>
+  <div class="formula">$$-\alpha_1+\alpha_2+\alpha_3=0,\qquad\alpha_1\ge0,\ \alpha_2\ge0,\ \alpha_3\ge0$$</div>
+  <div class="eg"><span class="tag">💡 Note</span><br>The conditions are \(\alpha_i\ge0\), not \(\alpha_i>0\). A multiplier is allowed to be exactly zero, and that is what happens for a point that is not a support vector. Requiring \(\alpha_i>0\) for all three points would wrongly force every point to be a support vector.</div>
+  <p>The constraint \(\sum\alpha_iy_i=0\) gives \(-\alpha_1+\alpha_2+\alpha_3=0\), so \(\alpha_1=\alpha_2+\alpha_3\). Substituting this reduces \(\Phi\) to two unknowns:</p>
+  <div class="formula">$$\Phi(\alpha_2,\alpha_3)=2\alpha_2+2\alpha_3-\tfrac{13}{2}\alpha_2^2-\tfrac{29}{2}\alpha_3^2-16\alpha_2\alpha_3$$</div>
+  <p><strong>Try setting both derivatives to zero:</strong> \(13\alpha_2+16\alpha_3=2\) and \(16\alpha_2+29\alpha_3=2\). Solving gives \(\alpha_2=\tfrac{26}{121}\) and \(\alpha_3=-\tfrac{6}{121}\). This is not allowed, because every \(\alpha_i\) must be \(\ge0\).</p>
+  <p>So the maximum lies on the boundary \(\alpha_3=0\), meaning point 3 is not a support vector. With \(\alpha_3=0\) we have \(\alpha_1=\alpha_2=a\), and</p>
+  <div class="formula">$$\Phi(a)=2a-\tfrac{13}{2}a^2,\qquad\frac{d\Phi}{da}=2-13a=0\;\Rightarrow\;\boxed{\alpha_1=\alpha_2=\tfrac{2}{13},\quad\alpha_3=0}$$</div>
+
+  <h4>Step 2: weight vector</h4>
+  <div class="formula">$$w=\tfrac{2}{13}(-1)\begin{bmatrix}2\\2\end{bmatrix}+\tfrac{2}{13}(+1)\begin{bmatrix}4\\5\end{bmatrix}=\tfrac{2}{13}\begin{bmatrix}2\\3\end{bmatrix}=\begin{bmatrix}\tfrac{4}{13}\\[2pt]\tfrac{6}{13}\end{bmatrix}$$</div>
+
+  <h4>Step 3: threshold</h4>
+  <p>The scores \(w^Tx\) are \(\tfrac{20}{13}\) for the negative point, and \(\tfrac{46}{13}\) and \(\tfrac{52}{13}\) for the positive points. The closest positive point has \(\tfrac{46}{13}\), so</p>
+  <div class="formula">$$b=\tfrac12\left(\tfrac{46}{13}+\tfrac{20}{13}\right)=\tfrac{33}{13}$$</div>
+
+  <h4>Step 4: decision score and hyperplane</h4>
+  <div class="formula">$$f(x)=w^Tx-b=\frac{4x_1+6x_2-33}{13}$$</div>
+  <p>Setting \(f(x)=0\) gives the maximum-margin hyperplane:</p>
+  <div class="formula">$$\boxed{4x_1+6x_2-33=0}$$</div>
+  <div class="eg"><span class="tag">✅ Check</span><br>\(f(2,2)=-1\) and \(f(4,5)=+1\), so points 1 and 2 lie exactly on the margin. \(f(7,4)=\tfrac{19}{13}>1\), so point 3 is safely on the positive side and \(\alpha_3=0\) was the right choice. The margin width is \(2/\lVert w\rVert=\sqrt{13}\), equal to the distance between points 1 and 2.</div>
+  <div class="eg"><span class="tag">⚠️ Watch out</span><br>If the unconstrained solution gives a negative \(\alpha_i\), do not use it. Set that \(\alpha_i=0\), remove the point from the sum, and solve again with the remaining points.</div>
+  <div class="eg"><span class="tag">🧭 Geometric view</span><br>The closest pair of points from opposite classes is \(A=(2,2)\) and \(B=(4,5)\), at distance \(\sqrt{13}\). The foot of the perpendicular from \(A\) to the line through \(B\) and \(C\) falls beyond \(B\), outside the segment \(BC\), so \(C\) is not the nearest point. The maximum margin hyperplane is the perpendicular bisector of \(AB\): it passes through the midpoint \((3,\,3.5)\) with normal direction \(B-A=(2,3)\), giving \(2x_1+3x_2-16.5=0\), which is the same as \(4x_1+6x_2-33=0\).</div>
+  <div class="eg"><span class="tag">⚠️ Not every separating line is maximal</span><br>The line \(x_1+3x_2-\tfrac{27}{2}=0\) passes midway between \(A\) and the line through \(B\) and \(C\), and it does separate the classes. Its margin is \(\dfrac{11}{\sqrt{10}}\approx3.48\), which is smaller than \(\sqrt{13}\approx3.61\), so it is not the maximum margin hyperplane.</div>
   <h3 id="mmsep">Maximum Margin linear separators</h3><div class="ph">Content to be added.</div>
+  <h4>Worked example: equation of the optimal hyperplane</h4>
+  <p>A training set has 14 points \(x_i=(x_{i1},x_{i2})\) with labels \(y_i=\pm1\).</p>
+  <div class="qw"><table class="qt">
+    <tr><th>\(i\)</th><th>\(x_{i1}\)</th><th>\(x_{i2}\)</th><th>\(y_i\)</th><th>\(i\)</th><th>\(x_{i1}\)</th><th>\(x_{i2}\)</th><th>\(y_i\)</th></tr>
+    <tr><td>1</td><td>3.5</td><td>4.25</td><td>+1</td><td>8</td><td>5.5</td><td>3.5</td><td>+1</td></tr>
+    <tr><td>2</td><td>4</td><td>3</td><td>+1</td><td>9</td><td>0.5</td><td>1.5</td><td>−1</td></tr>
+    <tr><td>3</td><td>4</td><td>4</td><td>+1</td><td>10</td><td>1</td><td>2.5</td><td>−1</td></tr>
+    <tr><td>4</td><td>4.5</td><td>1.75</td><td>+1</td><td>11</td><td>1.25</td><td>0.5</td><td>−1</td></tr>
+    <tr><td>5</td><td>4.9</td><td>4.5</td><td>+1</td><td>12</td><td>1.5</td><td>1.5</td><td>−1</td></tr>
+    <tr><td>6</td><td>5</td><td>4</td><td>+1</td><td>13</td><td>2</td><td>2</td><td>−1</td></tr>
+    <tr><td>7</td><td>5.5</td><td>2.5</td><td>+1</td><td>14</td><td>2.5</td><td>0.75</td><td>−1</td></tr>
+  </table></div>
+  <p>Solving the Lagrangian dual gives the following non-zero values of the Lagrange multipliers \(\alpha_i\). The points with \(\alpha_i>0\) are the <strong>support vectors</strong>. All other points have \(\alpha_i=0\) and do not affect the hyperplane.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Support vector</th><th>\(x_{i1}\)</th><th>\(x_{i2}\)</th><th>\(y_i\)</th><th>\(\alpha_i\)</th></tr>
+    <tr><td>\(x_1\)</td><td>3.5</td><td>4.25</td><td>+1</td><td>0.0437</td></tr>
+    <tr><td>\(x_2\)</td><td>4</td><td>3</td><td>+1</td><td>0.2162</td></tr>
+    <tr><td>\(x_4\)</td><td>4.5</td><td>1.75</td><td>+1</td><td>0.1427</td></tr>
+    <tr><td>\(x_{13}\)</td><td>2</td><td>2</td><td>−1</td><td>0.3589</td></tr>
+    <tr><td>\(x_{14}\)</td><td>2.5</td><td>0.75</td><td>−1</td><td>0.0437</td></tr>
+  </table></div>
+  <p><strong>Determine the equation of the optimal hyperplane</strong> \(w_1x_1+w_2x_2+b=0\).</p>
+  <div class="eg"><span class="tag">📌 Plan</span><br>Find the weight vector with \(\mathbf{w}=\sum_i\alpha_iy_i\mathbf{x}_i\), then find the bias \(b\) from a support vector, which lies exactly on the margin and so satisfies \(y_i(\mathbf{w}\cdot\mathbf{x}_i+b)=1\).</div>
+
+  <h4>1. Weight vector</h4>
+  <p>Only the support vectors contribute, so</p>
+  <div class="formula">$$\mathbf{w}=0.0437(+1)\begin{bmatrix}3.5\\4.25\end{bmatrix}+0.2162(+1)\begin{bmatrix}4\\3\end{bmatrix}+0.1427(+1)\begin{bmatrix}4.5\\1.75\end{bmatrix}+0.3589(-1)\begin{bmatrix}2\\2\end{bmatrix}+0.0437(-1)\begin{bmatrix}2.5\\0.75\end{bmatrix}$$</div>
+  <p>Work out each component separately:</p>
+  <div class="formula">$$\begin{aligned}
+  w_1&=0.15295+0.8648+0.64215-0.7178-0.10925=0.83285\\
+  w_2&=0.185725+0.6486+0.249725-0.7178-0.032775=0.333475
+  \end{aligned}$$</div>
+  <div class="formula">$$\mathbf{w}=\begin{bmatrix}w_1\\w_2\end{bmatrix}=\begin{bmatrix}0.83285\\0.333475\end{bmatrix}$$</div>
+
+  <h4>2. Bias</h4>
+  <p>Every support vector lies exactly on the margin, so each one satisfies \(w_1x_{i1}+w_2x_{i2}+b_i=y_i\). Using \(\mathbf{w}\approx(0.832,\;0.333)\), solve for \(b_i\) from <strong>each</strong> support vector, then average the results to get the final bias.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Support vector</th><th>Equation</th><th>\(b_i\)</th></tr>
+    <tr><td>\(x_1\)</td><td>\(0.832(3.5)+0.333(4.25)+b_1=+1\)</td><td>−3.327</td></tr>
+    <tr><td>\(x_2\)</td><td>\(0.832(4)+0.333(3)+b_2=+1\)</td><td>−3.327</td></tr>
+    <tr><td>\(x_4\)</td><td>\(0.832(4.5)+0.333(1.75)+b_3=+1\)</td><td>−3.327</td></tr>
+    <tr><td>\(x_{13}\)</td><td>\(0.832(2)+0.333(2)+b_4=-1\)</td><td>−3.330</td></tr>
+    <tr><td>\(x_{14}\)</td><td>\(0.832(2.5)+0.333(0.75)+b_5=-1\)</td><td>−3.330</td></tr>
+  </table></div>
+  <div class="formula">$$b=\frac{-3.327-3.327-3.327-3.330-3.330}{5}\approx\boxed{-3.328}$$</div>
+  <p>The five values are almost equal. The small differences come only from rounding \(\mathbf{w}\) and the \(\alpha_i\), which is why we average them.</p>
+
+  <h4>3. Optimal hyperplane</h4>
+  <p>Substitute \(w_1\), \(w_2\) and \(b\) into \(w_1x_1+w_2x_2+b=0\):</p>
+  <div class="formula">$$\boxed{0.832\,x_1+0.333\,x_2-3.328=0}$$</div>
+  <p>A new point is classified by the sign of \(0.832x_1+0.333x_2-3.328\): positive means class \(+1\) and negative means class \(-1\).</p>
+  <div class="eg"><span class="tag">✅ Check</span><br>The multipliers balance, since \(\sum\alpha_iy_i=0.0437+0.2162+0.1427-0.3589-0.0437=0\). The margin width is \(\dfrac{2}{\lVert\mathbf{w}\rVert}=\dfrac{2}{\sqrt{0.83285^2+0.333475^2}}\approx2.23\).</div>
+
+  <h4>Worked example: finding the hyperplane from three support vectors</h4>
+  <p>Suppose we are given the following positively and negatively labelled data points.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Class</th><th>Data points</th></tr>
+    <tr><td>\(+1\)</td><td>\((3,1),\ (3,-1),\ (6,1),\ (6,-1)\)</td></tr>
+    <tr><td>\(-1\)</td><td>\((1,0),\ (0,1),\ (0,-1),\ (-1,0)\)</td></tr>
+  </table></div>
+  <p>The three support vectors are \(s_1=(1,0)\), \(s_2=(3,1)\) and \(s_3=(3,-1)\). <strong>Find the maximum margin hyperplane.</strong></p>
+  <figure class="fig">
+  <svg viewBox="0 0 400 218" role="img" aria-label="Positive points at x=3 and x=6, negative points around the origin, support vectors circled, and the separating line x=2">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M20 100H390"/><path d="M80 10V190"/></g>
+   <path d="M120 10V190M200 10V190" stroke="var(--ac)" stroke-width="1.2" stroke-dasharray="5 4"/>
+   <path d="M160 10V190" stroke="var(--head)" stroke-width="2.2"/>
+   <g fill="#2f9be0"><circle cx="200" cy="60" r="6"/><circle cx="200" cy="140" r="6"/><circle cx="320" cy="60" r="6"/><circle cx="320" cy="140" r="6"/></g>
+   <g fill="#f08a00"><rect x="114" y="94" width="12" height="12"/><rect x="74" y="54" width="12" height="12"/><rect x="74" y="134" width="12" height="12"/><rect x="34" y="94" width="12" height="12"/></g>
+   <g fill="none" stroke="#d6249f" stroke-width="2"><circle cx="120" cy="100" r="12"/><circle cx="200" cy="60" r="12"/><circle cx="200" cy="140" r="12"/></g>
+   <text x="166" y="22">hyperplane</text><text x="124" y="188">−1 side</text><text x="204" y="188">+1 side</text>
+   <text x="342" y="95">x₁</text><text x="86" y="18">x₂</text>
+   <circle cx="105" cy="207" r="6" fill="#2f9be0"/><text x="117" y="212">+1</text>
+   <rect x="179" y="201" width="12" height="12" fill="#f08a00"/><text x="197" y="212">−1</text>
+   <circle cx="265" cy="207" r="8" fill="none" stroke="#d6249f" stroke-width="2"/><text x="280" y="212">SV</text>
+  </svg>
+  <figcaption>Blue circles are class +1, orange squares are class −1, circled points are the support vectors, and the solid line is the hyperplane.</figcaption>
+  </figure>
+  <div class="eg"><span class="tag">📌 Idea</span><br>Add a 1 to every support vector so that the bias is learned together with the weights: \(\tilde{s}=(s_1,s_2,1)\). The \(\alpha_i\) are found by requiring that \(\sum_j\alpha_j\,\tilde{s}_j\cdot\tilde{s}_i=y_i\) for every support vector \(i\).</div>
+
+  <h4>1. Augment the support vectors</h4>
+  <div class="formula">$$\tilde{s}_1=\begin{bmatrix}1\\0\\1\end{bmatrix},\qquad \tilde{s}_2=\begin{bmatrix}3\\1\\1\end{bmatrix},\qquad \tilde{s}_3=\begin{bmatrix}3\\-1\\1\end{bmatrix}$$</div>
+  <p>The labels are \(y_1=-1\), \(y_2=+1\) and \(y_3=+1\).</p>
+
+  <h4>2. Write the three equations</h4>
+  <p>Let the augmented weight vector be \(\tilde{w}=\alpha_1\tilde{s}_1+\alpha_2\tilde{s}_2+\alpha_3\tilde{s}_3\). The support vectors have scores \(-1,+1,+1\), so \(\tilde{w}^T\tilde{s}_1=-1\), \(\tilde{w}^T\tilde{s}_2=+1\) and \(\tilde{w}^T\tilde{s}_3=+1\). Substituting \(\tilde{w}\) gives one equation per support vector:</p>
+  <div class="formula">$$\begin{aligned}
+  \alpha_1\,\tilde{s}_1\!\cdot\!\tilde{s}_1+\alpha_2\,\tilde{s}_2\!\cdot\!\tilde{s}_1+\alpha_3\,\tilde{s}_3\!\cdot\!\tilde{s}_1&=-1\\
+  \alpha_1\,\tilde{s}_1\!\cdot\!\tilde{s}_2+\alpha_2\,\tilde{s}_2\!\cdot\!\tilde{s}_2+\alpha_3\,\tilde{s}_3\!\cdot\!\tilde{s}_2&=+1\\
+  \alpha_1\,\tilde{s}_1\!\cdot\!\tilde{s}_3+\alpha_2\,\tilde{s}_2\!\cdot\!\tilde{s}_3+\alpha_3\,\tilde{s}_3\!\cdot\!\tilde{s}_3&=+1
+  \end{aligned}$$</div>
+  <p>Evaluate each dot product by multiplying matching entries and adding:</p>
+  <div class="formula">$$\begin{aligned}
+  \alpha_1(1+0+1)+\alpha_2(3+0+1)+\alpha_3(3+0+1)&=-1\\
+  \alpha_1(3+0+1)+\alpha_2(9+1+1)+\alpha_3(9-1+1)&=1\\
+  \alpha_1(3+0+1)+\alpha_2(9-1+1)+\alpha_3(9+1+1)&=1
+  \end{aligned}$$</div>
+  <p>Simplifying gives three equations in three unknowns:</p>
+  <div class="formula">$$\begin{aligned}
+  2\alpha_1+4\alpha_2+4\alpha_3&=-1&&(1)\\
+  4\alpha_1+11\alpha_2+9\alpha_3&=1&&(2)\\
+  4\alpha_1+9\alpha_2+11\alpha_3&=1&&(3)
+  \end{aligned}$$</div>
+
+  <h4>3. Solve by elimination</h4>
+  <p><strong>(a)</strong> Subtract equation (3) from equation (2). The \(\alpha_1\) terms cancel:</p>
+  <div class="formula">$$\begin{aligned}(11-9)\alpha_2+(9-11)\alpha_3&=1-1\\2\alpha_2-2\alpha_3&=0\\\alpha_2&=\alpha_3\end{aligned}$$</div>
+  <p><strong>(b)</strong> Set \(\alpha_2=\alpha_3=a\). Equations (1) and (2) become</p>
+  <div class="formula">$$\begin{aligned}2\alpha_1+8a&=-1&&(4)\\4\alpha_1+20a&=1&&(5)\end{aligned}$$</div>
+  <p>Multiply equation (4) by 2 to get \(4\alpha_1+16a=-2\), then subtract it from equation (5):</p>
+  <div class="formula">$$\begin{aligned}(4\alpha_1+20a)-(4\alpha_1+16a)&=1-(-2)\\4a&=3\\a&=\tfrac34\end{aligned}$$</div>
+  <p><strong>(c)</strong> Substitute \(a=\tfrac34\) into equation (4):</p>
+  <div class="formula">$$\begin{aligned}2\alpha_1+8\left(\tfrac34\right)&=-1\\2\alpha_1+6&=-1\\2\alpha_1&=-7\\\alpha_1&=-\tfrac72\end{aligned}$$</div>
+  <p>Therefore</p>
+  <div class="formula">$$\boxed{\alpha_1=-\tfrac72=-3.5,\qquad\alpha_2=\alpha_3=\tfrac34=0.75}$$</div>
+
+  <h4>4. Weight vector and bias</h4>
+  <div class="formula">$$\tilde{w}=\sum_i\alpha_i\tilde{s}_i=-\tfrac72\begin{bmatrix}1\\0\\1\end{bmatrix}+\tfrac34\begin{bmatrix}3\\1\\1\end{bmatrix}+\tfrac34\begin{bmatrix}3\\-1\\1\end{bmatrix}=\begin{bmatrix}1\\0\\-2\end{bmatrix}$$</div>
+  <p>Using the convention \(f(\mathbf{x})=\mathbf{w}^T\mathbf{x}+b\), the first two entries are the weights and the last entry is the bias, so \(\mathbf{w}=(1,0)^T\) and \(b=-2\).</p>
+
+  <h4>5. The hyperplane</h4>
+  <div class="formula">$$\mathbf{w}\cdot\mathbf{x}+b=0\;\Rightarrow\;\boxed{x_1-2=0}$$</div>
+  <p>This is the vertical line \(x_1=2\). A point is class \(+1\) if \(x_1>2\) and class \(-1\) if \(x_1<2\).</p>
+  <div class="eg"><span class="tag">✅ Check</span><br>\(s_1=(1,0)\): \(1-2=-1\). \(s_2=(3,1)\): \(3-2=+1\). \(s_3=(3,-1)\): \(3-2=+1\). All three lie exactly on the margin. The margin width is \(\dfrac{2}{\lVert\mathbf{w}\rVert}=2\).</div>
 </section>
 
 <section id="s7"><div class="num">7</div><h2>Soft margin SVM</h2>
@@ -129,6 +538,72 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
 
 <section id="s8"><div class="num">8</div><h2>Non-linear SVM and kernels</h2>
   <h3 id="nonlin">Non-linear SVM</h3><div class="ph">Content to be added.</div>
+  <h4>Worked example: nonlinear SVM with a feature mapping</h4>
+  <p>Suppose we are given the following positively labelled data points</p>
+  <div class="formula">$$\left\{\begin{bmatrix}2\\2\end{bmatrix},\begin{bmatrix}2\\-2\end{bmatrix},\begin{bmatrix}-2\\-2\end{bmatrix},\begin{bmatrix}-2\\2\end{bmatrix}\right\}$$</div>
+  <p>and the following negatively labelled data points</p>
+  <div class="formula">$$\left\{\begin{bmatrix}1\\1\end{bmatrix},\begin{bmatrix}1\\-1\end{bmatrix},\begin{bmatrix}-1\\-1\end{bmatrix},\begin{bmatrix}-1\\1\end{bmatrix}\right\}$$</div>
+  <p>The goal is to find a separating hyperplane that discriminates between the two classes.</p>
+  <figure class="fig">
+  <svg viewBox="0 0 400 240" role="img" aria-label="Four negative points near the origin surrounded by four positive points at the corners of a square">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M20 120H385"/><path d="M200 10V205"/></g>
+   <circle cx="200" cy="120" r="80" fill="none" stroke="var(--ac)" stroke-width="1.2" stroke-dasharray="5 4"/>
+   <g fill="#2e9e4f"><circle cx="280" cy="40" r="6"/><circle cx="280" cy="200" r="6"/><circle cx="120" cy="200" r="6"/><circle cx="120" cy="40" r="6"/></g>
+   <g fill="#d6249f"><circle cx="240" cy="80" r="6"/><circle cx="240" cy="160" r="6"/><circle cx="160" cy="160" r="6"/><circle cx="160" cy="80" r="6"/></g>
+   <text x="286" y="116">2</text><text x="368" y="114">x₁</text><text x="206" y="18">x₂</text><text x="238" y="132">radius 2</text>
+   <circle cx="120" cy="228" r="6" fill="#2e9e4f"/><text x="132" y="233">+ve</text>
+   <circle cx="200" cy="228" r="6" fill="#d6249f"/><text x="212" y="233">−ve</text>
+  </svg>
+  <figcaption>The negative points lie inside the square formed by the positive points. The dashed circle has radius 2.</figcaption>
+  </figure>
+  <div class="eg"><span class="tag">📌 Problem</span><br>No straight line can separate the two classes in the original space, because the negative points are surrounded by the positive ones. The fix is to apply a nonlinear mapping \(\phi\) so that the classes become linearly separable in the new space.</div>
+
+  <h4>1. The feature mapping</h4>
+  <div class="formula">$$\phi\!\left(\begin{bmatrix}x_1\\x_2\end{bmatrix}\right)=\begin{cases}\begin{bmatrix}4-x_2+|x_1-x_2|\\4-x_1+|x_1-x_2|\end{bmatrix}, & \sqrt{x_1^2+x_2^2}>2,\\[10pt]\begin{bmatrix}x_1\\x_2\end{bmatrix}, & \text{otherwise.}\end{cases}$$</div>
+  <p>Points outside the circle of radius 2 are moved by the first rule. Points inside or on it stay where they are.</p>
+
+  <h4>2. Map the data points</h4>
+  <p><strong>Positive examples.</strong> All four lie at distance \(\sqrt8\approx2.83>2\), so they use the first rule. For \((2,-2)\): \(|x_1-x_2|=4\), so \(\phi=(4+2+4,\;4-2+4)=(10,6)\).</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Original point</th><th>\(|x_1-x_2|\)</th><th>Mapped point</th></tr>
+    <tr><td>\((2,2)\)</td><td>0</td><td>\((2,2)\)</td></tr>
+    <tr><td>\((2,-2)\)</td><td>4</td><td>\((10,6)\)</td></tr>
+    <tr><td>\((-2,-2)\)</td><td>0</td><td>\((6,6)\)</td></tr>
+    <tr><td>\((-2,2)\)</td><td>4</td><td>\((6,10)\)</td></tr>
+  </table></div>
+  <p><strong>Negative examples.</strong> All four lie at distance \(\sqrt2<2\), so the four negative examples map to themselves: \((1,1)\), \((1,-1)\), \((-1,-1)\), \((-1,1)\).</p>
+  <figure class="fig">
+  <svg viewBox="0 0 360 252" role="img" aria-label="After the mapping, positive points are far from the origin, negative points stay near it, and the line x1+x2=3 separates them">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M10 185H345"/><path d="M50 5V225"/></g>
+   <path d="M28 117L160 219" stroke="var(--head)" stroke-width="2.2"/>
+   <g fill="#2e9e4f"><circle cx="94" cy="151" r="6"/><circle cx="270" cy="83" r="6"/><circle cx="182" cy="83" r="6"/><circle cx="182" cy="15" r="6"/></g>
+   <g fill="#d6249f"><circle cx="72" cy="168" r="6"/><circle cx="72" cy="202" r="6"/><circle cx="28" cy="202" r="6"/><circle cx="28" cy="168" r="6"/></g>
+   <g fill="none" stroke="var(--head)" stroke-width="2"><circle cx="72" cy="168" r="11"/><circle cx="94" cy="151" r="11"/></g>
+   <text x="36" y="104">hyperplane</text><text x="330" y="180">φ₁</text><text x="56" y="14">φ₂</text>
+   <text x="276" y="87">(10, 6)</text><text x="188" y="19">(6, 10)</text><text x="188" y="87">(6, 6)</text>
+   <circle cx="90" cy="240" r="6" fill="#2e9e4f"/><text x="102" y="245">+ve</text>
+   <circle cx="170" cy="240" r="6" fill="#d6249f"/><text x="182" y="245">−ve</text>
+   <circle cx="250" cy="240" r="8" fill="none" stroke="var(--head)" stroke-width="2"/><text x="264" y="245">SV</text>
+  </svg>
+  <figcaption>In the transformed space a straight line separates the classes. The circled points are the support vectors.</figcaption>
+  </figure>
+
+  <h4>3. Support vectors in the transformed space</h4>
+  <p>In the transformed space the support vectors are \(s_1=(1,1)\) (negative) and \(s_2=(2,2)\) (positive). Augment each with a bias input of 1:</p>
+  <div class="formula">$$\tilde{s}_1=(1,1,1)^T,\qquad\tilde{s}_2=(2,2,1)^T$$</div>
+
+  <h4>4. Solve for \(\alpha_1\) and \(\alpha_2\)</h4>
+  <p>With \(\tilde{w}=\alpha_1\tilde{s}_1+\alpha_2\tilde{s}_2\) and scores \(\tilde{w}^T\tilde{s}_1=-1\), \(\tilde{w}^T\tilde{s}_2=+1\), the dot products \(\tilde{s}_1\cdot\tilde{s}_1=3\), \(\tilde{s}_1\cdot\tilde{s}_2=5\) and \(\tilde{s}_2\cdot\tilde{s}_2=9\) give</p>
+  <div class="formula">$$\begin{aligned}3\alpha_1+5\alpha_2&=-1&&(1)\\5\alpha_1+9\alpha_2&=1&&(2)\end{aligned}$$</div>
+  <p>Multiply (1) by 5 and (2) by 3, then subtract: \((27-25)\alpha_2=3+5\), so \(2\alpha_2=8\). Substituting back into (1) gives \(3\alpha_1=-1-20\).</p>
+  <div class="formula">$$\boxed{\alpha_1=-7,\qquad\alpha_2=4}$$</div>
+
+  <h4>5. Weight vector, bias and hyperplane</h4>
+  <div class="formula">$$\tilde{w}=-7\begin{bmatrix}1\\1\\1\end{bmatrix}+4\begin{bmatrix}2\\2\\1\end{bmatrix}=\begin{bmatrix}1\\1\\-3\end{bmatrix}$$</div>
+  <p>So \(\mathbf{w}=(1,1)^T\) and \(b=-3\). The separating hyperplane in the transformed space is</p>
+  <div class="formula">$$\boxed{\phi_1+\phi_2-3=0}$$</div>
+  <p>To classify a new point, first apply \(\phi\), then check the sign of \(\phi_1+\phi_2-3\): positive means the positive class and negative means the negative class.</p>
+  <div class="eg"><span class="tag">✅ Check</span><br>\(s_1=(1,1)\): \(1+1-3=-1\). \(s_2=(2,2)\): \(2+2-3=+1\). The point \((-1,-1)\) gives \(-5\) and \((6,6)\) gives \(+9\), so the two classes fall on opposite sides. The margin width is \(\dfrac{2}{\lVert\mathbf{w}\rVert}=\dfrac{2}{\sqrt2}=\sqrt2\), which equals the distance between \(s_1\) and \(s_2\).</div>
   <h3 id="kernels">Kernels for learning non-linear functions</h3><div class="ph">Content to be added.</div>
   <h3 id="poly">Polynomial kernel</h3>
   <h4>Worked example: finding the feature mapping of a kernel</h4>
@@ -159,6 +634,24 @@ footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-siz
   </table></div>
   <p>The \(\sqrt2\) factors are there because each vector contributes one \(\sqrt2\), giving the coefficient 2 when they are multiplied. Adding the five products gives exactly the kernel expansion:</p>
   <div class="formula">$$\boxed{\phi(x)^T\phi(y)=K(x,y)=(x\cdot y+1)^2-1}\qquad\blacksquare$$</div>
+  <div class="eg"><span class="tag">📝 Short answer (exam style)</span><br>For \(x=(x_1,x_2)^T\) and \(y=(y_1,y_2)^T\), the feature-space dot product is
+  $$\phi(x)^T\phi(y)=x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2+2x_1y_1+2x_2y_2$$
+  Expanding the kernel gives
+  $$\begin{aligned}K(x,y)&=(x^Ty+1)^2-1=(x_1y_1+x_2y_2+1)^2-1\\&=x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2+2x_1y_1+2x_2y_2\\&=\phi(x)^T\phi(y)\end{aligned}$$
+  So the kernel computes the feature-space dot product directly from the two original inputs.</div>
+
+  <h4>4. Numerical check</h4>
+  <p>Let us use actual numbers to see why both methods give the same answer. Take \(x=(1,2)\) and \(y=(2,1)\).</p>
+  <p><strong>Method 1: use the kernel directly.</strong> First, take the dot product of the two original points:</p>
+  <div class="formula">$$x\cdot y=(1)(2)+(2)(1)=4$$</div>
+  <p>Now substitute \(4\) into the kernel:</p>
+  <div class="formula">$$K(x,y)=(x\cdot y+1)^2-1=(4+1)^2-1=\boxed{24}$$</div>
+  <p><strong>Method 2: convert both points to 5-D first.</strong> Using the five features from the problem, we get</p>
+  <div class="formula">$$\phi(x)=(1,\,4,\,2\sqrt2,\,\sqrt2,\,2\sqrt2),\qquad \phi(y)=(4,\,1,\,2\sqrt2,\,2\sqrt2,\,\sqrt2)$$</div>
+  <p>Multiply matching entries and add:</p>
+  <div class="formula">$$\begin{aligned}\phi(x)\cdot\phi(y)&=(1)(4)+(4)(1)+(2\sqrt2)(2\sqrt2)+(\sqrt2)(2\sqrt2)+(2\sqrt2)(\sqrt2)\\&=4+4+8+4+4\\&=\boxed{24}\end{aligned}$$</div>
+  <p>The ordinary 2-D dot product is \(4\). The 5-D feature-space dot product is \(24\). The kernel turns the first value into the second using \((4+1)^2-1\), so the SVM can get the feature-space dot product directly from the original coordinates.</p>
+  <div class="eg"><span class="tag">🤔 Why create these features?</span><br>A weighted sum of the new features can include terms like \(x_1^2\) and \(x_1x_2\). Those terms let a <em>linear</em> boundary in the feature space correspond to a <em>curved</em> boundary in the original 2-D plot.</div>
   <div class="eg"><span class="tag">💡 Kernel trick</span><br>Whenever the SVM needs the 5-D dot product, it can evaluate \(K(x,y)\) directly from the original 2-D points. It works as if the data lived in 5-D, where it may become linearly separable, but it only does cheap 2-D calculations.</div>
 
   <h3 id="rbf">Radial Basis Function (RBF)</h3><div class="ph">Content to be added.</div>
