@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Lecture notes: neural networks, backpropagation and support vector machines.">
+<title>CST413 Machine Learning · Module 3: Neural Networks and Support Vector Machines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=JetBrains+Mono:wght@400&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}}</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root{--fig:#e4edfb;--bg:#eef3fb;--card:#fbfdff;--tx:#222b3a;--head:#12305c;--ac:#2f6fd0;--ac-soft:#d6e4fa;--mut:#68768d;--bd:#dae3f1;--dot:#dce5f3}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--fig:#1d2d4b;--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}}
+:root[data-theme="dark"]{--fig:#1d2d4b;--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--tx);font:19px/1.7 "Newsreader",Georgia,serif;background-color:var(--bg);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+a{color:var(--head);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;max-width:1150px;margin:0 auto;padding:0 24px}
+aside{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:0 0 24px}
+.side-title{font:400 13px/1 "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.04em;padding-bottom:12px;border-bottom:1px solid var(--bd);margin-bottom:14px}
+aside ol{list-style:none;margin:0;padding:0}
+aside a{display:grid;grid-template-columns:30px 1fr;gap:6px;padding:8px 10px;border-radius:6px;font-size:16px;line-height:1.35;color:var(--tx)}
+aside a i{font-style:normal;color:var(--ac);font-size:14px}
+aside a:hover{background:var(--ac-soft);text-decoration:none}
+aside a.on{background:var(--ac-soft)}
+main{padding:0 0 40px;min-width:0}
+.back{font-size:16px;color:var(--ac)}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;color:var(--head);line-height:1.2}
+.top{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:center;max-width:1150px;margin:0 auto;padding:30px 24px 0}
+.hd{text-align:center;min-width:0}
+.eyebrow{font:700 clamp(1.7rem,4.2vw,2.5rem)/1.2 "Fraunces",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;color:var(--ac)}
+.hd h1{margin:6px 0 6px;font-size:clamp(1.4rem,3.4vw,1.9rem)}
+.lead{color:var(--mut);margin:0 0 20px;font-size:1.15rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:20px 26px;margin-bottom:34px}
+.card h2{margin:0 0 8px;font-size:1.35rem}
+.card ul{margin:0;padding-left:20px}.card li{margin:6px 0}
+.card a{color:var(--ac);border-bottom:1px solid var(--ac-soft)}
+section{scroll-margin-top:20px;margin-bottom:44px}
+.num{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;font:600 15px "Newsreader",serif;margin-bottom:12px}
+section>h2{font-size:2rem;margin:0 0 14px}
+h3{font-size:1.3rem;margin:28px 0 8px;scroll-margin-top:20px}
+h4{font-size:1.05rem;margin:18px 0 6px}
+.formula{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 14px;margin:14px 0;overflow-x:auto;text-align:center}
+.formula mjx-container{margin:.4em 0!important}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
+.tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:6px}
+.qw{overflow-x:auto}
+.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
+.qt th{background:var(--ac);color:#fff;padding:8px 18px;text-align:left;font-weight:600}
+.qt td{padding:8px 18px;border-bottom:1px solid var(--bd);color:var(--head)}
+.ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
+summary{cursor:pointer;font-weight:600;color:var(--head)}
+details p{margin:8px 0 0;color:var(--mut)}
+.pager{margin:10px 0 28px}
+.pager a{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 22px}
+.pager small{display:block;color:var(--mut);font-size:14px}
+footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:8px}.top .back{justify-self:start}.layout{grid-template-columns:1fr;gap:0}aside{position:static;max-height:none;padding:24px 0 0}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="back" href="https://leenasilvoster.github.io/Machine_Learning/Module_2.html">← Module 2</a>
+  <header class="hd">
+    <div class="eyebrow">CST413 Machine Learning</div>
+    <h1>Module 3</h1>
+    <p class="lead">Neural Networks and Support Vector Machines</p>
+  </header>
+</div>
+<div class="layout">
+<aside>
+  <div class="side-title">Module 3</div>
+  <ol id="side">
+    <li><a href="#s1"><i>1</i><span>Perceptron</span></a></li>
+    <li><a href="#s2"><i>2</i><span>Multilayer feed-forward network</span></a></li>
+    <li><a href="#s3"><i>3</i><span>Activation functions</span></a></li>
+    <li><a href="#s4"><i>4</i><span>Backpropagation algorithm</span></a></li>
+    <li><a href="#s5"><i>5</i><span>SVM: introduction</span></a></li>
+    <li><a href="#s6"><i>6</i><span>Maximum margin classification</span></a></li>
+    <li><a href="#s7"><i>7</i><span>Soft margin SVM</span></a></li>
+    <li><a href="#s8"><i>8</i><span>Non-linear SVM and kernels</span></a></li>
+    <li><a href="#check"><i>9</i><span>Self-check</span></a></li>
+  </ol>
+</aside>
 
+<main>
+<div class="card">
+  <h2>Syllabus</h2>
+  <p style="margin:0 0 6px"><strong>Module-3 (Neural Networks (NN) and Support Vector Machines (SVM))</strong></p>
+  <ul>
+    <li><strong>Neural networks:</strong> <a href="#perceptron">Perceptron</a>, <a href="#mlffn">Neural Network – Multilayer feed forward network</a>, <a href="#act">Activation functions (Sigmoid, ReLU, Tanh)</a>, <a href="#backprop">Backpropagation algorithm</a>.</li>
+    <li><strong>Support vector machines:</strong> <a href="#svmintro">Introduction</a>, <a href="#mmc">Maximum Margin Classification</a>, <a href="#mmmath">Mathematics behind Maximum Margin Classification</a>, <a href="#mmsep">Maximum Margin linear separators</a>, <a href="#soft">Soft margin SVM classifier</a>, <a href="#nonlin">Non-linear SVM</a>, <a href="#kernels">Kernels for learning non-linear functions</a>, <a href="#poly">Polynomial kernel</a>, <a href="#rbf">Radial Basis Function (RBF)</a>.</li>
+  </ul>
+</div>
+
+<section id="s1"><div class="num">1</div><h2>Perceptron</h2>
+  <h3 id="perceptron">Perceptron</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s2"><div class="num">2</div><h2>Multilayer feed-forward network</h2>
+  <h3 id="mlffn">Neural Network – Multilayer feed forward network</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s3"><div class="num">3</div><h2>Activation functions</h2>
+  <h3 id="act">Sigmoid, ReLU and Tanh</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s4"><div class="num">4</div><h2>Backpropagation algorithm</h2>
+  <h3 id="backprop">Backpropagation algorithm</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s5"><div class="num">5</div><h2>SVM: introduction</h2>
+  <h3 id="svmintro">Introduction</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s6"><div class="num">6</div><h2>Maximum margin classification</h2>
+  <h3 id="mmc">Maximum Margin Classification</h3><div class="ph">Content to be added.</div>
+  <h3 id="mmmath">Mathematics behind Maximum Margin Classification</h3><div class="ph">Content to be added.</div>
+  <h3 id="mmsep">Maximum Margin linear separators</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s7"><div class="num">7</div><h2>Soft margin SVM</h2>
+  <h3 id="soft">Soft margin SVM classifier</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s8"><div class="num">8</div><h2>Non-linear SVM and kernels</h2>
+  <h3 id="nonlin">Non-linear SVM</h3><div class="ph">Content to be added.</div>
+  <h3 id="kernels">Kernels for learning non-linear functions</h3><div class="ph">Content to be added.</div>
+  <h3 id="poly">Polynomial kernel</h3>
+  <h4>Worked example: finding the feature mapping of a kernel</h4>
+  <p>Consider an SVM with 2-D input, \(x=(x_1,x_2)\) and \(y=(y_1,y_2)\), and the kernel</p>
+  <div class="formula">$$K(x,y)=(x\cdot y+1)^2-1$$</div>
+  <p><strong>Show that</strong> this kernel implicitly maps the input to a 5-D feature space.</p>
+  <div class="eg"><span class="tag">📌 Idea</span><br>A kernel is a shortcut for the dot product in feature space. So we must show that \(K(x,y)=\phi(x)^T\phi(y)\) by expanding the kernel and matching its terms with the features.</div>
+
+  <h4>1. Define the mapping</h4>
+  <p>Start with a point \(x=(x_1,x_2)\). The mapping \(\phi\) uses those two coordinates to create five features:</p>
+  <div class="formula">$$\phi(x)=\begin{bmatrix}x_1^2\\x_2^2\\\sqrt2\,x_1x_2\\\sqrt2\,x_1\\\sqrt2\,x_2\end{bmatrix}$$</div>
+  <p>For example, if \(x=(1,2)\), then \(\phi(x)=(1,\,4,\,2\sqrt2,\,\sqrt2,\,2\sqrt2)\). The point \(y\) is mapped in the same way, giving \(\phi(y)=(y_1^2,\,y_2^2,\,\sqrt2\,y_1y_2,\,\sqrt2\,y_1,\,\sqrt2\,y_2)\).</p>
+
+  <h4>2. Expand the kernel</h4>
+  <p>The original dot product is \(x\cdot y=x_1y_1+x_2y_2\). Substituting it into the kernel gives</p>
+  <div class="formula">$$\begin{aligned}K(x,y)&=(x_1y_1+x_2y_2+1)^2-1\\&=(x_1y_1+x_2y_2)^2+2(x_1y_1+x_2y_2)\\&=x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2+2x_1y_1+2x_2y_2\end{aligned}$$</div>
+  <p>The second line uses \((a+1)^2-1=a^2+2a\). The two constant terms cancel.</p>
+
+  <h4>3. Match the five terms to the five features</h4>
+  <p>A dot product means <strong>multiply matching entries and add the products</strong>. Each pair of entries in \(\phi(x)\) and \(\phi(y)\) gives one term of the expanded kernel.</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Feature from \(x\)</th><th>Matching feature from \(y\)</th><th>Product</th></tr>
+    <tr><td>\(x_1^2\)</td><td>\(y_1^2\)</td><td>\(x_1^2y_1^2\)</td></tr>
+    <tr><td>\(x_2^2\)</td><td>\(y_2^2\)</td><td>\(x_2^2y_2^2\)</td></tr>
+    <tr><td>\(\sqrt2\,x_1x_2\)</td><td>\(\sqrt2\,y_1y_2\)</td><td>\(2x_1x_2y_1y_2\)</td></tr>
+    <tr><td>\(\sqrt2\,x_1\)</td><td>\(\sqrt2\,y_1\)</td><td>\(2x_1y_1\)</td></tr>
+    <tr><td>\(\sqrt2\,x_2\)</td><td>\(\sqrt2\,y_2\)</td><td>\(2x_2y_2\)</td></tr>
+  </table></div>
+  <p>The \(\sqrt2\) factors are there because each vector contributes one \(\sqrt2\), giving the coefficient 2 when they are multiplied. Adding the five products gives exactly the kernel expansion:</p>
+  <div class="formula">$$\boxed{\phi(x)^T\phi(y)=K(x,y)=(x\cdot y+1)^2-1}\qquad\blacksquare$$</div>
+  <div class="eg"><span class="tag">💡 Kernel trick</span><br>Whenever the SVM needs the 5-D dot product, it can evaluate \(K(x,y)\) directly from the original 2-D points. It works as if the data lived in 5-D, where it may become linearly separable, but it only does cheap 2-D calculations.</div>
+
+  <h3 id="rbf">Radial Basis Function (RBF)</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="check"><div class="num">9</div><h2>Self-check</h2>
+  <details><summary>Question 1</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 2</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 3</summary><p>Answer to be added.</p></details>
+</section>
+
+<nav class="pager" aria-label="Next module">
+  <a href="https://leenasilvoster.github.io/Machine_Learning/Module_4.html"><small>Next module</small><span>Module 4 →</span></a>
+</nav>
+<footer><span>CST413 Machine Learning · Module 3</span><a href="https://leenasilvoster.github.io/Machine_Learning/Module_2.html">← Module 2</a></footer>
+</main>
+</div>
+<script>
+var ls=[].slice.call(document.querySelectorAll('#side a'));
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.hash==='#'+e.target.id)})})},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section[id]').forEach(function(s){io.observe(s)});
+</script>
+</body>
+</html>
