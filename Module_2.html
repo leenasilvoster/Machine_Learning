@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Lecture notes: regression, gradient descent, logistic regression, Naive Bayes and decision trees.">
+<title>CST413 Machine Learning · Module 2: Supervised Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=JetBrains+Mono:wght@400&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]}}</script>
+<script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+<style>
+:root{--fig:#e4edfb;--bg:#eef3fb;--card:#fbfdff;--tx:#222b3a;--head:#12305c;--ac:#2f6fd0;--ac-soft:#d6e4fa;--mut:#68768d;--bd:#dae3f1;--dot:#dce5f3}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--fig:#1d2d4b;--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}}
+:root[data-theme="dark"]{--fig:#1d2d4b;--bg:#0f1624;--card:#172033;--tx:#dbe3f0;--head:#a9c7f5;--ac:#5b97ea;--ac-soft:#1f3355;--mut:#93a1b8;--bd:#2a3752;--dot:#17223a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--tx);font:19px/1.7 "Newsreader",Georgia,serif;background-color:var(--bg);background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:22px 22px;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+a{color:var(--head);text-decoration:none}a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;max-width:1150px;margin:0 auto;padding:0 24px}
+aside{position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto;padding:0 0 24px}
+.side-title{font:400 13px/1 "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.04em;padding-bottom:12px;border-bottom:1px solid var(--bd);margin-bottom:14px}
+aside ol{list-style:none;margin:0;padding:0}
+aside a{display:grid;grid-template-columns:30px 1fr;gap:6px;padding:8px 10px;border-radius:6px;font-size:16px;line-height:1.35;color:var(--tx)}
+aside a i{font-style:normal;color:var(--ac);font-size:14px}
+aside a:hover{background:var(--ac-soft);text-decoration:none}
+aside a.on{background:var(--ac-soft)}
+main{padding:0 0 40px;min-width:0}
+.back{font-size:16px;color:var(--ac)}
+h1,h2,h3,h4{font-family:"Fraunces",Georgia,serif;color:var(--head);line-height:1.2}
+.top{display:grid;grid-template-columns:270px minmax(0,1fr);gap:44px;align-items:center;max-width:1150px;margin:0 auto;padding:30px 24px 0}
+.hd{text-align:center;min-width:0}
+.eyebrow{font:700 clamp(1.7rem,4.2vw,2.5rem)/1.2 "Fraunces",Georgia,serif;letter-spacing:.02em;text-transform:uppercase;color:var(--ac)}
+.hd h1{margin:6px 0 6px;font-size:clamp(1.4rem,3.4vw,1.9rem)}
+.lead{color:var(--mut);margin:0 0 20px;font-size:1.15rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:20px 26px;margin-bottom:34px}
+.card h2{margin:0 0 8px;font-size:1.35rem}
+.card ul{margin:0;padding-left:20px}.card li{margin:6px 0}
+.card a{color:var(--ac);border-bottom:1px solid var(--ac-soft)}
+section{scroll-margin-top:20px;margin-bottom:44px}
+.num{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;font:600 15px "Newsreader",serif;margin-bottom:12px}
+section>h2{font-size:2rem;margin:0 0 14px}
+h3{font-size:1.3rem;margin:28px 0 8px;scroll-margin-top:20px}
+h4{font-size:1.05rem;margin:18px 0 6px}
+.formula{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:6px 14px;margin:14px 0;overflow-x:auto;text-align:center}
+.formula mjx-container{margin:.4em 0!important}
+.eg{background:var(--ac-soft);border-left:4px solid var(--ac);border-radius:10px;padding:12px 18px;margin:14px 0;font-size:17px}
+.tag{display:inline-block;background:var(--ac);color:#fff;font:400 12px/1 "JetBrains Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:6px 12px;margin-bottom:6px}
+.qw{overflow-x:auto}
+.qt{border-collapse:collapse;margin:12px auto;background:var(--card);min-width:280px}
+.qt th{background:var(--ac);color:#fff;padding:8px 18px;text-align:left;font-weight:600}
+.qt td{padding:8px 18px;border-bottom:1px solid var(--bd);color:var(--head)}
+.fig{background:var(--fig);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:16px auto;max-width:540px}
+.fig svg{display:block;width:100%;height:auto}
+.fig text{font-family:'Newsreader',Georgia,serif;font-size:13px;fill:var(--head)}
+.fig figcaption{text-align:center;color:var(--mut);font-size:15px;margin-top:4px}
+.qt.sm th,.qt.sm td{padding:6px 9px;text-align:center}
+.def{background:linear-gradient(135deg,var(--ac-soft),var(--card));border:1px solid var(--bd);border-left:6px solid var(--ac);border-radius:14px;padding:16px 22px 18px;margin:12px 0 14px}
+.def p{margin:0;font:600 clamp(1.1rem,2.6vw,1.4rem)/1.45 "Fraunces",Georgia,serif;color:var(--head)}
+.rem{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.rem div{background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--ac);border-radius:12px;padding:12px 16px;color:var(--head)}
+.rem b{display:block;color:var(--ac);margin-bottom:2px}
+.rem ul{margin:4px 0 0;padding-left:20px}
+@media(max-width:640px){.rem{grid-template-columns:1fr}}
+.ph{background:var(--card);border:1px dashed var(--bd);border-radius:10px;padding:12px 18px;color:var(--mut);font-size:16px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:10px 18px;margin:10px 0}
+summary{cursor:pointer;font-weight:600;color:var(--head)}
+details p{margin:8px 0 0;color:var(--mut)}
+.pager{margin:10px 0 28px}
+.pager a{display:inline-block;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 22px}
+.pager small{display:block;color:var(--mut);font-size:14px}
+footer{border-top:1px solid var(--bd);padding-top:16px;color:var(--mut);font-size:15px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+@media(max-width:860px){.top{grid-template-columns:1fr;gap:8px}.top .back{justify-self:start}.layout{grid-template-columns:1fr;gap:0}aside{position:static;max-height:none;padding:24px 0 0}}
+</style>
+</head>
+<body>
+<div class="top">
+  <a class="back" href="https://leenasilvoster.github.io/Machine_Learning/Module_1.html">← Module 1</a>
+  <header class="hd">
+    <div class="eyebrow">CST413 Machine Learning</div>
+    <h1>Module 2</h1>
+    <p class="lead">Supervised Learning</p>
+  </header>
+</div>
+<div class="layout">
+<aside>
+  <div class="side-title">Module 2</div>
+  <ol id="side">
+    <li><a href="#s1"><i>1</i><span>Linear regression with one variable</span></a></li>
+    <li><a href="#s2"><i>2</i><span>Linear regression with multiple variables</span></a></li>
+    <li><a href="#s3"><i>3</i><span>Gradient descent algorithm</span></a></li>
+    <li><a href="#s4"><i>4</i><span>Matrix method</span></a></li>
+    <li><a href="#s5"><i>5</i><span>Overfitting in regression</span></a></li>
+    <li><a href="#s6"><i>6</i><span>Logistic regression</span></a></li>
+    <li><a href="#s7"><i>7</i><span>Naive Bayes</span></a></li>
+    <li><a href="#s8"><i>8</i><span>Decision tree: ID3</span></a></li>
+    <li><a href="#check"><i>9</i><span>Self-check</span></a></li>
+  </ol>
+</aside>
+
+<main>
+<div class="card">
+  <h2>Syllabus</h2>
+  <p style="margin:0 0 6px"><strong>Module-2 (Supervised Learning)</strong></p>
+  <ul>
+    <li><strong>Regression:</strong> <a href="#lr1">Linear regression with one variable</a>, <a href="#lrm">Linear regression with multiple variables</a>, <a href="#gd">solution using gradient descent algorithm</a> and <a href="#matrix">matrix method</a>, <a href="#over">basic idea of overfitting in regression</a>.</li>
+    <li><strong>Linear methods for classification:</strong> <a href="#logreg">Logistic regression</a>, <a href="#nb">Naive Bayes</a>, <a href="#id3">Decision tree algorithm ID3</a>.</li>
+  </ul>
+</div>
+
+<section id="s1"><div class="num">1</div><h2>Linear regression with one variable</h2>
+  <h3 id="lr1">Linear regression with one variable</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s2"><div class="num">2</div><h2>Linear regression with multiple variables</h2>
+  <h3 id="lrm">Linear regression with multiple variables</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s3"><div class="num">3</div><h2>Gradient descent algorithm</h2>
+  <h3 id="gd">Gradient descent algorithm</h3>
+  <p><strong>Gradient descent</strong> is the most common optimization algorithm in machine learning and deep learning. It is a <strong>first-order</strong> optimization algorithm, which means it only takes into account the first derivative when performing the updates on the parameters.</p>
+  <p>On each iteration, we update the parameters in the <em>opposite</em> direction of the gradient of the objective function \(J(w)\) with respect to the parameters, because the gradient gives the direction of the steepest ascent. The size of the step we take on each iteration to reach the local minimum is determined by the <strong>learning rate</strong> \(\alpha\). Therefore, we follow the direction of the slope downhill until we reach a local minimum.</p>
+  <div class="formula">$$w:=w-\alpha\,\nabla_wJ(w)$$</div>
+  <figure class="fig" style="max-width:460px">
+  <svg viewBox="0 0 400 250" role="img" aria-label="Bowl-shaped curve J(w) with a negative gradient on the left, a positive gradient on the right, and zero gradient at the minimum">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M30 228H385"/><path d="M40 15V232"/></g>
+   <path d="M80 40Q200 340 320 40" fill="none" stroke="var(--ac)" stroke-width="2.6"/>
+   <g stroke="#d33" stroke-width="1.6" stroke-dasharray="5 4"><path d="M98 91L158 181"/><path d="M242 181L302 91"/></g>
+   <path d="M160 190H240" stroke="#2e9e4f" stroke-width="1.6" stroke-dasharray="5 4"/>
+   <g fill="#d33"><circle cx="128" cy="136" r="4"/><circle cx="272" cy="136" r="4"/></g>
+   <text x="46" y="22">J(w)</text><text x="372" y="246">w</text>
+   <text x="52" y="116" style="fill:#d33;font-size:13px">∇J &lt; 0</text><text x="52" y="132" style="fill:#d33;font-size:13px">negative</text>
+   <text x="312" y="116" style="fill:#d33;font-size:13px">∇J &gt; 0</text><text x="312" y="132" style="fill:#d33;font-size:13px">positive</text>
+   <text x="200" y="212" text-anchor="middle" style="fill:#2e9e4f;font-size:14px">minimum: ∇J = 0</text>
+  </svg>
+  <figcaption>The sign of the gradient tells us which way is uphill. We step the other way.</figcaption>
+  </figure>
+  <div class="eg"><span class="tag">📌 Why the minus sign?</span><br>On the left of the minimum the gradient is negative, so \(-\alpha\nabla_wJ\) is positive and \(w\) increases (moves right, towards the minimum). On the right the gradient is positive, so \(w\) decreases. At the minimum \(\nabla_wJ=0\), so \(w\) stops changing.</div>
+  <h4>Linear regression solution using gradient descent</h4>
+  <p>The cost function (objective function) to be minimized is the <strong>Mean Square Error</strong> (MSE) in approximating the data:</p>
+  <div class="formula">$$J(\boldsymbol\theta)=\frac{1}{2n}\sum_{i=1}^{n}\left(h_{\boldsymbol\theta}\big(\boldsymbol{x}^{(i)}\big)-y^{(i)}\right)^2,\qquad h_{\boldsymbol\theta}(\boldsymbol{x})=\sum_{k=0}^{d}\theta_kx_k\ \ (x_0=1)$$</div>
+  <ul>
+    <li><strong>Initialize</strong> \(\boldsymbol\theta\).</li>
+    <li><strong>Repeat until convergence:</strong> \(\displaystyle\theta_j\leftarrow\theta_j-\alpha\frac{\partial}{\partial\theta_j}J(\boldsymbol\theta)\), a <strong>simultaneous update</strong> for \(j=0,\dots,d\).</li>
+  </ul>
+  <h4>The partial derivative</h4>
+  <div class="formula">$$\begin{aligned}\frac{\partial}{\partial\theta_j}J(\boldsymbol\theta)&=\frac{\partial}{\partial\theta_j}\frac{1}{2n}\sum_{i=1}^{n}\left(h_{\boldsymbol\theta}\big(\boldsymbol{x}^{(i)}\big)-y^{(i)}\right)^2\\&=\frac{\partial}{\partial\theta_j}\frac{1}{2n}\sum_{i=1}^{n}\left(\sum_{k=0}^{d}\theta_kx_k^{(i)}-y^{(i)}\right)^2\\&=\frac1n\sum_{i=1}^{n}\left(\sum_{k=0}^{d}\theta_kx_k^{(i)}-y^{(i)}\right)\times\frac{\partial}{\partial\theta_j}\left(\sum_{k=0}^{d}\theta_kx_k^{(i)}-y^{(i)}\right)\\&=\frac1n\sum_{i=1}^{n}\left(\sum_{k=0}^{d}\theta_kx_k^{(i)}-y^{(i)}\right)x_j^{(i)}\end{aligned}$$</div>
+  <p>Only the term with \(k=j\) depends on \(\theta_j\), so the last derivative is simply \(x_j^{(i)}\). Substituting gives the final update rule:</p>
+  <div class="formula">$$\boxed{\theta_j\leftarrow\theta_j-\alpha\,\frac1n\sum_{i=1}^{n}\left(h_{\boldsymbol\theta}\big(\boldsymbol{x}^{(i)}\big)-y^{(i)}\right)x_j^{(i)}}\qquad\text{simultaneous update for }j=0,\dots,d$$</div>
+
+  <h4>Choosing the learning rate \(\alpha\)</h4>
+  <figure class="fig" style="max-width:520px">
+  <svg viewBox="0 0 420 180" role="img" aria-label="Three bowl curves: too small a learning rate takes many tiny steps, a good rate reaches the minimum in a few steps, and too large a rate zigzags upward">
+   <g fill="none" stroke="var(--ac)" stroke-width="2"><path d="M10 20Q65 170 120 20"/><path d="M150 20Q205 170 260 20"/><path d="M290 20Q345 170 400 20"/></g>
+   <g fill="#2f9be0"><circle cx="114.5" cy="34" r="2.6"/><circle cx="109" cy="47" r="2.6"/><circle cx="103.5" cy="58" r="2.6"/><circle cx="98" cy="68" r="2.6"/><circle cx="92.5" cy="76" r="2.6"/><circle cx="87" cy="83" r="2.6"/></g>
+   <g fill="#d33"><circle cx="254.5" cy="34" r="3.2"/><circle cx="238" cy="68" r="3.2"/><circle cx="218" cy="91" r="3.2"/><circle cx="207" cy="95" r="3.2"/></g>
+   <path d="M254.5 34L238 68L218 91L207 95" fill="none" stroke="#d33" stroke-width="1.6"/>
+   <g fill="#d33"><circle cx="372" cy="76" r="3.2"/><circle cx="294" cy="32" r="3.2"/><circle cx="398" cy="26" r="3.2"/></g>
+   <path d="M372 76L294 32L398 26" fill="none" stroke="#d33" stroke-width="1.6"/>
+   <g text-anchor="middle"><text x="65" y="172">Too small</text><text x="205" y="172">Just right</text><text x="345" y="172">Too large</text></g>
+  </svg>
+  <figcaption>Left: slow convergence. Middle: a few steps reach the minimum. Right: the steps overshoot and \(J(\boldsymbol\theta)\) keeps increasing.</figcaption>
+  </figure>
+  <div class="rem">
+    <div><b>\(\alpha\) too small</b>A small learning rate requires many updates before reaching the minimum point (slow convergence).</div>
+    <div><b>\(\alpha\) too large</b>Drastic updates may overshoot the minimum, may fail to converge, and may even diverge, with \(J(\boldsymbol\theta)\) increasing.</div>
+  </div>
+
+  <h4>Stochastic gradient descent</h4>
+  <p>On-line gradient descent, also known as <strong>sequential gradient descent</strong> or <strong>stochastic gradient descent</strong>, makes an update to the weight vector based on <strong>one data point at a time</strong>. Instead of summing the error over all \(n\) points before each step, it updates after each single point \(i\):</p>
+  <div class="formula">$$\theta_j\leftarrow\theta_j-\alpha\left(h_{\boldsymbol\theta}\big(\boldsymbol{x}^{(i)}\big)-y^{(i)}\right)x_j^{(i)}$$</div>
+</section>
+
+<section id="s4"><div class="num">4</div><h2>Matrix method</h2>
+  <h3 id="matrix">Solution using the matrix method</h3>
+  <p>Gradient descent reaches the best parameters step by step. The <strong>matrix method</strong> finds them directly in one calculation, by setting the gradient of the cost function to zero and solving for \(\boldsymbol\theta\).</p>
+  <h4>Setting up the matrices</h4>
+  <p>Let there be \(n\) training examples and \(d\) features. Put a constant \(x_0=1\) in front of every example so that the intercept \(\theta_0\) is handled like any other parameter.</p>
+  <div class="formula">$$X=\begin{bmatrix}1&x_1^{(1)}&\cdots&x_d^{(1)}\\1&x_1^{(2)}&\cdots&x_d^{(2)}\\\vdots&\vdots&&\vdots\\1&x_1^{(n)}&\cdots&x_d^{(n)}\end{bmatrix},\qquad\mathbf{y}=\begin{bmatrix}y^{(1)}\\y^{(2)}\\\vdots\\y^{(n)}\end{bmatrix},\qquad\boldsymbol\theta=\begin{bmatrix}\theta_0\\\theta_1\\\vdots\\\theta_d\end{bmatrix}$$</div>
+  <p>\(X\) is the \(n\times(d+1)\) <strong>design matrix</strong>. The predictions for all examples are given at once by \(\hat{\mathbf{y}}=X\boldsymbol\theta\), and the cost function becomes</p>
+  <div class="formula">$$J(\boldsymbol\theta)=\frac{1}{2n}(X\boldsymbol\theta-\mathbf{y})^T(X\boldsymbol\theta-\mathbf{y})$$</div>
+  <h4>Deriving the solution</h4>
+  <p>The gradient of \(J\) with respect to \(\boldsymbol\theta\) is</p>
+  <div class="formula">$$\nabla_{\boldsymbol\theta}J=\frac1nX^T(X\boldsymbol\theta-\mathbf{y})$$</div>
+  <p>This is the matrix form of the sum \(\frac1n\sum_i(h_{\boldsymbol\theta}(\boldsymbol{x}^{(i)})-y^{(i)})x_j^{(i)}\) from the gradient descent update. At the minimum the gradient is zero:</p>
+  <div class="formula">$$X^T(X\boldsymbol\theta-\mathbf{y})=0\;\Rightarrow\;X^TX\,\boldsymbol\theta=X^T\mathbf{y}$$</div>
+  <p>If \(X^TX\) is invertible, multiplying both sides by \((X^TX)^{-1}\) gives the <strong>normal equation</strong>:</p>
+  <div class="formula">$$\boxed{\boldsymbol\theta=(X^TX)^{-1}X^T\mathbf{y}}$$</div>
+  <h4>Worked example</h4>
+  <p>Fit a line \(y=\theta_0+\theta_1x\) to the points \((1,1)\), \((2,2)\) and \((3,2)\).</p>
+  <div class="formula">$$X=\begin{bmatrix}1&1\\1&2\\1&3\end{bmatrix},\qquad\mathbf{y}=\begin{bmatrix}1\\2\\2\end{bmatrix}$$</div>
+  <div class="formula">$$X^TX=\begin{bmatrix}3&6\\6&14\end{bmatrix},\qquad X^T\mathbf{y}=\begin{bmatrix}1+2+2\\1+4+6\end{bmatrix}=\begin{bmatrix}5\\11\end{bmatrix}$$</div>
+  <p>The determinant of \(X^TX\) is \(3\cdot14-6\cdot6=6\), so</p>
+  <div class="formula">$$(X^TX)^{-1}=\frac16\begin{bmatrix}14&-6\\-6&3\end{bmatrix},\qquad\boldsymbol\theta=\frac16\begin{bmatrix}14\cdot5-6\cdot11\\-6\cdot5+3\cdot11\end{bmatrix}=\frac16\begin{bmatrix}4\\3\end{bmatrix}=\begin{bmatrix}2/3\\1/2\end{bmatrix}$$</div>
+  <p>The fitted line is \(\boxed{\hat{y}=\tfrac23+\tfrac12x}\).</p>
+  <div class="eg"><span class="tag">✅ Check</span><br>The predictions are \(\tfrac76,\ \tfrac53,\ \tfrac{13}{6}\), so the errors \(\hat{y}-y\) are \(\tfrac16,\ -\tfrac13,\ \tfrac16\). They add up to zero, and so do the errors multiplied by \(x\): \(\tfrac16-\tfrac23+\tfrac12=0\). This is exactly the condition \(X^T(X\boldsymbol\theta-\mathbf{y})=0\).</div>
+  <p>The same formula works for several variables. Only the number of columns of \(X\) changes.</p>
+  <h4>Matrix method versus gradient descent</h4>
+  <div class="qw"><table class="qt">
+    <tr><th></th><th>Gradient descent</th><th>Matrix method (normal equation)</th></tr>
+    <tr><td>Learning rate \(\alpha\)</td><td>Must be chosen</td><td>Not needed</td></tr>
+    <tr><td>Iterations</td><td>Many</td><td>None, a single calculation</td></tr>
+    <tr><td>Many features (large \(d\))</td><td>Works well</td><td>Slow, since inverting \(X^TX\) costs about \(d^3\) operations</td></tr>
+    <tr><td>Requirement</td><td>None</td><td>\(X^TX\) must be invertible. It is not if features are redundant (linearly dependent) or there are fewer examples than parameters</td></tr>
+  </table></div>
+</section>
+
+<section id="s5"><div class="num">5</div><h2>Overfitting in regression</h2>
+  <h3 id="over">Basic idea of overfitting in regression</h3>
+  <p>A good regression model should fit the training data and also predict new, unseen data well. The model can fail in two opposite ways.</p>
+  <div class="qw"><table class="qt">
+    <tr><th></th><th>Underfitting</th><th>Overfitting</th><th>Good fit</th></tr>
+    <tr><td>Training error</td><td>High</td><td>Low</td><td>Minimum</td></tr>
+    <tr><td>Testing error</td><td>High</td><td>High</td><td>Minimum</td></tr>
+    <tr><td>Problem</td><td>High bias</td><td>High variance</td><td>Bias–variance trade-off</td></tr>
+  </table></div>
+  <h4>Quality of fit</h4>
+  <p>Suppose we predict the price of a house from its size \(x\). The same data can be fitted with polynomials of different degree:</p>
+  <div class="qw"><table class="qt">
+    <tr><th>Model</th><th>Fit</th></tr>
+    <tr><td>\(\theta_0+\theta_1x\)</td><td>Underfitting (high bias): too simple to follow the curve in the data</td></tr>
+    <tr><td>\(\theta_0+\theta_1x+\theta_2x^2\)</td><td>Correct fit</td></tr>
+    <tr><td>\(\theta_0+\theta_1x+\theta_2x^2+\theta_3x^3+\theta_4x^4\)</td><td>Overfitting (high variance): passes through every point but wiggles between them</td></tr>
+  </table></div>
+  <h4>What is bias?</h4>
+  <ul>
+    <li>Bias is the difference between the average prediction of our model and the correct value which we are trying to predict.</li>
+    <li>A model with <strong>high bias</strong> pays very little attention to the training data and oversimplifies the model.</li>
+    <li>It always leads to high error on training and test data.</li>
+  </ul>
+  <h4>What is variance?</h4>
+  <ul>
+    <li>Variance is the variability of the model prediction for a given data point, a value which tells us the spread of our data.</li>
+    <li>A model with <strong>high variance</strong> pays a lot of attention to the training data and does not generalize to data it has not seen before.</li>
+    <li>Such models perform very well on training data but have high error rates on test data.</li>
+  </ul>
+  <div class="rem">
+    <div><b>Low bias</b>The average prediction is very close to the target value.</div>
+    <div><b>High bias</b>The predictions differ too much from the actual value.</div>
+    <div><b>Low variance</b>The predictions are compact and do not vary much from their mean value.</div>
+    <div><b>High variance</b>Scattered predictions with huge variations from the mean value and from each other.</div>
+  </div>
+  <figure class="fig" style="max-width:420px">
+  <svg viewBox="0 0 400 395" role="img" aria-label="Four targets: low bias with low variance, low bias with high variance, high bias with low variance, and high bias with high variance"><circle cx="150" cy="105" r="75" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="105" r="52" fill="#7ab3d8" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="105" r="32" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="105" r="12" fill="#c0303f" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="105" r="75" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="105" r="52" fill="#7ab3d8" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="105" r="32" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="105" r="12" fill="#c0303f" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="300" r="75" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="300" r="52" fill="#7ab3d8" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="300" r="32" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="150" cy="300" r="12" fill="#c0303f" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="300" r="75" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="300" r="52" fill="#7ab3d8" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="300" r="32" fill="var(--card)" stroke="var(--head)" stroke-width="1.4"/><circle cx="310" cy="300" r="12" fill="#c0303f" stroke="var(--head)" stroke-width="1.4"/><circle cx="146" cy="102" r="2.6" fill="#1a1a8c"/><circle cx="150" cy="100" r="2.6" fill="#1a1a8c"/><circle cx="154" cy="104" r="2.6" fill="#1a1a8c"/><circle cx="148" cy="108" r="2.6" fill="#1a1a8c"/><circle cx="152" cy="107" r="2.6" fill="#1a1a8c"/><circle cx="150" cy="104" r="2.6" fill="#1a1a8c"/><circle cx="147" cy="105" r="2.6" fill="#1a1a8c"/><circle cx="153" cy="101" r="2.6" fill="#1a1a8c"/><circle cx="290" cy="95" r="2.6" fill="#1a1a8c"/><circle cx="325" cy="80" r="2.6" fill="#1a1a8c"/><circle cx="335" cy="110" r="2.6" fill="#1a1a8c"/><circle cx="300" cy="125" r="2.6" fill="#1a1a8c"/><circle cx="315" cy="100" r="2.6" fill="#1a1a8c"/><circle cx="305" cy="90" r="2.6" fill="#1a1a8c"/><circle cx="330" cy="98" r="2.6" fill="#1a1a8c"/><circle cx="298" cy="112" r="2.6" fill="#1a1a8c"/><circle cx="320" cy="128" r="2.6" fill="#1a1a8c"/><circle cx="312" cy="108" r="2.6" fill="#1a1a8c"/><circle cx="285" cy="115" r="2.6" fill="#1a1a8c"/><circle cx="340" cy="90" r="2.6" fill="#1a1a8c"/><circle cx="146" cy="252" r="2.6" fill="#1a1a8c"/><circle cx="150" cy="250" r="2.6" fill="#1a1a8c"/><circle cx="154" cy="254" r="2.6" fill="#1a1a8c"/><circle cx="148" cy="257" r="2.6" fill="#1a1a8c"/><circle cx="152" cy="256" r="2.6" fill="#1a1a8c"/><circle cx="150" cy="253" r="2.6" fill="#1a1a8c"/><circle cx="155" cy="250" r="2.6" fill="#1a1a8c"/><circle cx="145" cy="255" r="2.6" fill="#1a1a8c"/><circle cx="285" cy="250" r="2.6" fill="#1a1a8c"/><circle cx="300" cy="265" r="2.6" fill="#1a1a8c"/><circle cx="320" cy="255" r="2.6" fill="#1a1a8c"/><circle cx="290" cy="240" r="2.6" fill="#1a1a8c"/><circle cx="305" cy="275" r="2.6" fill="#1a1a8c"/><circle cx="330" cy="260" r="2.6" fill="#1a1a8c"/><circle cx="280" cy="265" r="2.6" fill="#1a1a8c"/><circle cx="312" cy="245" r="2.6" fill="#1a1a8c"/><circle cx="298" cy="255" r="2.6" fill="#1a1a8c"/><circle cx="325" cy="275" r="2.6" fill="#1a1a8c"/><g text-anchor="middle" style="font-size:14px"><text x="150" y="16">Low variance</text><text x="310" y="16">High variance</text><text transform="translate(16,105) rotate(-90)">Low bias</text><text transform="translate(16,300) rotate(-90)">High bias</text></g></svg>
+  <figcaption>The centre of each target is the correct value. Each dot is a prediction. Bias is how far the dots are from the centre on average, and variance is how spread out they are.</figcaption>
+  </figure>
+
+  <h4>Bias–variance trade-off</h4>
+  <figure class="fig" style="max-width:460px">
+  <svg viewBox="0 0 400 250" role="img" aria-label="Bias falls and variance rises as model complexity increases; generalization error is lowest in between">
+   <g stroke="var(--mut)" stroke-width="1.2"><path d="M40 215H385"/><path d="M40 20V215"/></g>
+   <path d="M210 25V215" stroke="var(--head)" stroke-width="1.8" stroke-dasharray="6 5"/>
+   <path d="M45 40Q110 190 380 195" fill="none" stroke="#3b4bc8" stroke-width="2.4" stroke-dasharray="3 4"/>
+   <path d="M45 195Q260 195 380 60" fill="none" stroke="#2e9e4f" stroke-width="2.4" stroke-dasharray="3 4"/>
+   <path d="M45 30Q190 250 380 50" fill="none" stroke="#c33" stroke-width="2.6"/>
+   <text x="125" y="40" text-anchor="middle" style="font-size:13px">underfitting zone</text><text x="295" y="40" text-anchor="middle" style="font-size:13px">overfitting zone</text>
+   <text x="295" y="118" style="fill:#c33;font-size:13px">generalization error</text>
+   <text x="70" y="185" style="fill:#3b4bc8;font-size:13px">bias</text><text x="320" y="150" style="fill:#2e9e4f;font-size:13px">variance</text>
+   <text x="385" y="238" text-anchor="end" style="font-size:13px">model complexity</text>
+  </svg>
+  <figcaption>As model complexity grows, bias falls and variance rises. The generalization error is lowest where they balance.</figcaption>
+  </figure>
+  <div class="eg"><span class="tag">📌 In short</span><br>A model that is too simple has <strong>high bias</strong> and underfits. A model that is too complex has <strong>high variance</strong> and overfits. We aim for the complexity where the testing error is smallest.</div>
+
+  <h4>Overfitting</h4>
+  <p>The learned hypothesis may fit the training set very well, but may fail to generalize to new examples.</p>
+  <h4>How to avoid overfitting</h4>
+  <ul>
+    <li><strong>Reduce the number of features.</strong> An overfitting algorithm captures the noise in the data, so using fewer features helps.</li>
+    <li><strong>K-fold cross validation</strong> to estimate how the model performs on unseen data.</li>
+    <li><strong>Increase the training data.</strong></li>
+    <li><strong>Regularization.</strong></li>
+  </ul>
+  <h4>Regularization</h4>
+  <p>Regularization adds a <strong>penalty</strong> on the size of the coefficients to the least-squares (LS) objective. This keeps the coefficients small, makes the model less sensitive to noise, and reduces variance. The constant \(\lambda\ge0\) controls the strength of the penalty. With \(\lambda=0\) we get ordinary least squares.</p>
+  <div class="rem">
+    <div><b>Lasso regression (L1)</b>Least Absolute Shrinkage and Selection Operator. It adds a penalty equal to the <strong>absolute value of the magnitude</strong> of the coefficients. It can shrink some coefficients to exactly zero, so it also selects features.</div>
+    <div><b>Ridge regression (L2)</b>It adds a penalty equal to the <strong>square of the magnitude</strong> of the coefficients. It shrinks all coefficients towards zero.</div>
+  </div>
+  <p>Minimization objective = LS objective \(+\ \lambda\times\)(penalty on the coefficients):</p>
+  <div class="formula">$$\text{Lasso (L1):}\quad\sum_{i=1}^{M}\Big(y_i-\sum_{j=0}^{p}w_jx_{ij}\Big)^2+\lambda\sum_{j=0}^{p}|w_j|$$
+  $$\text{Ridge (L2):}\quad\sum_{i=1}^{M}\Big(y_i-\sum_{j=0}^{p}w_jx_{ij}\Big)^2+\lambda\sum_{j=0}^{p}w_j^2$$</div>
+  <h4>How to avoid underfitting</h4>
+  <p>Increase the model complexity. For example, if a linear function underfits the data, try using polynomial features.</p>
+  <h4>How to detect overfitting</h4>
+  <p>Do not judge a model only by its error on the data it was trained on. Keep some data aside and compare the two errors:</p>
+  <ul>
+    <li><strong>Underfitting:</strong> training error and testing error are both high.</li>
+    <li><strong>Overfitting:</strong> training error is low but testing error is high. A large gap between them is the warning sign.</li>
+    <li><strong>Good fit:</strong> both errors are low and close to each other.</li>
+  </ul>
+  <p>With <strong>K-fold cross validation</strong>, the data is split into \(K\) equal parts. The model is trained on \(K-1\) parts and tested on the remaining part, this is repeated \(K\) times so that every part is used once for testing, and the \(K\) test errors are averaged.</p>
+</section>
+
+<section id="s6"><div class="num">6</div><h2>Logistic regression</h2>
+  <h3 id="clsintro">Linear methods for classification</h3>
+  <p>In classification the output is a discrete class label, not a number. This part of the module covers three methods: logistic regression, Naive Bayes and the ID3 decision tree algorithm.</p>
+  <h3 id="logreg">Logistic regression</h3>
+  <p>Suppose we want to predict whether a student passes an exam (\(y=1\)) or fails (\(y=0\)) from the hours of study \(x\). A straight line is a poor fit for 0/1 outcomes, but an S-shaped curve that gives the <strong>probability of passing</strong> fits well.</p>
+  <figure class="fig" style="max-width:480px">
+  <svg viewBox="0 0 420 245" role="img" aria-label="Probability of passing an exam against hours of study: points at 0 and 1 with an S-shaped logistic curve rising from near 0 to near 1"><g stroke="var(--mut)" stroke-width="1.2"><path d="M40 200H395"/><path d="M40 30V200"/></g><path d="M70.0 194.3 L85.0 191.9 L100.0 188.4 L115.0 183.7 L130.0 177.3 L145.0 169.0 L160.0 158.5 L175.0 146.0 L190.0 131.9 L205.0 117.0 L220.0 102.3 L235.0 88.8 L250.0 77.0 L265.0 67.4 L280.0 59.9 L295.0 54.3 L310.0 50.1 L325.0 47.1 L340.0 44.9 L355.0 43.4 L370.0 42.4" fill="none" stroke="var(--ac)" stroke-width="2.6"/><circle cx="70" cy="200" r="3.5" fill="var(--head)"/><circle cx="85" cy="200" r="3.5" fill="var(--head)"/><circle cx="100" cy="200" r="3.5" fill="var(--head)"/><circle cx="115" cy="200" r="3.5" fill="var(--head)"/><circle cx="130" cy="200" r="3.5" fill="var(--head)"/><circle cx="145" cy="200" r="3.5" fill="var(--head)"/><circle cx="160" cy="200" r="3.5" fill="var(--head)"/><circle cx="190" cy="200" r="3.5" fill="var(--head)"/><circle cx="214" cy="200" r="3.5" fill="var(--head)"/><circle cx="250" cy="200" r="3.5" fill="var(--head)"/><circle cx="145" cy="40" r="3.5" fill="var(--head)"/><circle cx="175" cy="40" r="3.5" fill="var(--head)"/><circle cx="205" cy="40" r="3.5" fill="var(--head)"/><circle cx="235" cy="40" r="3.5" fill="var(--head)"/><circle cx="280" cy="40" r="3.5" fill="var(--head)"/><circle cx="295" cy="40" r="3.5" fill="var(--head)"/><circle cx="310" cy="40" r="3.5" fill="var(--head)"/><circle cx="325" cy="40" r="3.5" fill="var(--head)"/><circle cx="340" cy="40" r="3.5" fill="var(--head)"/><circle cx="370" cy="40" r="3.5" fill="var(--head)"/><text x="100" y="218" text-anchor="middle" style="font-size:13px">1</text><text x="160" y="218" text-anchor="middle" style="font-size:13px">2</text><text x="220" y="218" text-anchor="middle" style="font-size:13px">3</text><text x="280" y="218" text-anchor="middle" style="font-size:13px">4</text><text x="340" y="218" text-anchor="middle" style="font-size:13px">5</text><text x="34" y="204" text-anchor="end" style="font-size:13px">0</text><text x="34" y="124" text-anchor="end" style="font-size:13px">0.5</text><text x="34" y="44" text-anchor="end" style="font-size:13px">1</text><text x="215" y="238" text-anchor="middle" style="font-size:14px">Hours studying</text><text transform="translate(12,115) rotate(-90)" text-anchor="middle" style="font-size:14px">Probability of passing</text></svg>
+  <figcaption>Probability of passing the exam versus hours of studying. Dots at 0 are fails and dots at 1 are passes.</figcaption>
+  </figure>
+  <h4>Logistic (sigmoid) function</h4>
+  <div class="formula">$$p=\frac{1}{1+e^{-(\beta_0+\beta_1x)}}$$</div>
+  <p>The output always lies between 0 and 1, so it can be read as a probability. It equals 0.5 when \(\beta_0+\beta_1x=0\), approaches 0 for large negative values and approaches 1 for large positive values.</p>
+  <h4>Logit</h4>
+  <p>For an observation \(x_i\), the probability can be written in either of two equivalent forms:</p>
+  <div class="formula">$$p_i=\frac{1}{1+e^{-(\beta_0+\beta_1x_i)}}=\frac{e^{\beta_0+\beta_1x_i}}{e^{\beta_0+\beta_1x_i}+1}$$</div>
+  <h4>Log odds</h4>
+  <ul>
+    <li><strong>Odds</strong> (odds of success) is the chance of success divided by the chance of failure: \(\text{Odds}=\dfrac{p}{1-p}\).</li>
+    <li><strong>Log odds</strong> is the logarithm of the odds: \(\text{Log odds}=\log\dfrac{p}{1-p}\).</li>
+  </ul>
+  <h4>Log odds (logit) function</h4>
+  <p>Let \(z=\beta_0+\beta_1x_1\). Then</p>
+  <div class="formula">$$p=\frac{e^{z}}{1+e^{z}},\qquad1-p=1-\frac{e^{z}}{1+e^{z}}=\frac{1}{1+e^{z}},\qquad\frac{p}{1-p}=e^{z}$$</div>
+  <p>Taking the logarithm of the odds gives a linear function of \(x_1\):</p>
+  <div class="formula">$$\boxed{\log\!\left(\frac{p}{1-p}\right)=\beta_0+\beta_1x_1}$$</div>
+  <div class="eg"><span class="tag">📌 In short</span><br>Logistic regression is a <strong>linear</strong> model for the log odds. A new point is classified as class 1 when \(p\ge0.5\), which happens exactly when \(\beta_0+\beta_1x\ge0\).</div>
+
+  <h4>Logistic regression model</h4>
+  <div class="def"><p>The statistical model for logistic regression is \(\log\!\left(\dfrac{p}{1-p}\right)=\beta_0+\beta_1x\).</p></div>
+  <p>Here \(p\) is a binomial proportion (the probability of success) and \(x\) is the explanatory variable. The parameters of the logistic regression model are \(\beta_0\) and \(\beta_1\). For the \(i\)-th observation,</p>
+  <div class="formula">$$\log\!\left[\frac{p_i}{1-p_i}\right]=\beta_0+\beta_1x_i$$</div>
+  <p>(The slide writes \(\beta_0\cdot1\); the \(1\) is the constant input \(x_0=1\) that goes with the intercept.) A plot of the logit against \(x\) is a straight line, with the data scattered around it.</p>
+  <figure class="fig" style="max-width:340px">
+  <svg viewBox="0 0 300 190" role="img" aria-label="Logit plotted against x: the points lie close to a straight line"><g stroke="var(--mut)" stroke-width="1.2"><path d="M30 165H280"/><path d="M30 165V15"/></g><path d="M38 155L205 35" stroke="#2f6fd0" stroke-width="2.6"/><circle cx="50" cy="150" r="3.6" fill="#d33"/><circle cx="65" cy="140" r="3.6" fill="#d33"/><circle cx="80" cy="125" r="3.6" fill="#d33"/><circle cx="95" cy="128" r="3.6" fill="#d33"/><circle cx="110" cy="100" r="3.6" fill="#d33"/><circle cx="125" cy="112" r="3.6" fill="#d33"/><circle cx="140" cy="85" r="3.6" fill="#d33"/><circle cx="155" cy="60" r="3.6" fill="#d33"/><circle cx="170" cy="70" r="3.6" fill="#d33"/><circle cx="190" cy="40" r="3.6" fill="#d33"/><text x="36" y="14" style="font-size:13px">logit</text><text x="270" y="182" style="font-size:13px">x</text></svg>
+  <figcaption>The logit is a linear function of \(x\).</figcaption>
+  </figure>
+
+  <h4>Linear regression versus logistic regression</h4>
+  <figure class="fig" style="max-width:520px">
+  <svg viewBox="0 0 420 205" role="img" aria-label="Left: linear regression, a straight line through scattered points. Right: logistic regression, an S-shaped curve between 0 and 1 with a threshold value in the middle"><g stroke="var(--mut)" stroke-width="1.2"><path d="M30 180H195"/><path d="M30 180V25"/><path d="M240 180H405"/><path d="M240 180V25"/></g><path d="M35 168L185 50" stroke="#d33" stroke-width="2.2"/><circle cx="45" cy="150" r="3.6" fill="#2f6fd0"/><circle cx="60" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="75" cy="125" r="3.6" fill="#2f6fd0"/><circle cx="90" cy="130" r="3.6" fill="#2f6fd0"/><circle cx="105" cy="105" r="3.6" fill="#2f6fd0"/><circle cx="120" cy="105" r="3.6" fill="#2f6fd0"/><circle cx="135" cy="70" r="3.6" fill="#2f6fd0"/><circle cx="150" cy="85" r="3.6" fill="#2f6fd0"/><circle cx="165" cy="55" r="3.6" fill="#2f6fd0"/><circle cx="178" cy="65" r="3.6" fill="#2f6fd0"/><g stroke="var(--mut)" stroke-width="1" stroke-dasharray="2 4"><path d="M245 40H405"/><path d="M245 160H405"/></g><path d="M245 160C300 158 310 150 325 100C340 50 350 42 395 41" fill="none" stroke="#d33" stroke-width="2.2"/><path d="M245 100H405" stroke="var(--head)" stroke-width="1.2" stroke-dasharray="3 4"/><circle cx="290" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="300" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="320" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="330" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="340" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="350" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="360" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="375" cy="40" r="3.6" fill="#2f6fd0"/><circle cx="255" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="265" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="275" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="285" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="295" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="305" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="315" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="325" cy="160" r="3.6" fill="#2f6fd0"/><circle cx="335" cy="160" r="3.6" fill="#2f6fd0"/><text x="112" y="16" text-anchor="middle" style="font-size:14px;font-weight:600">Linear regression</text><text x="322" y="16" text-anchor="middle" style="font-size:14px;font-weight:600">Logistic regression</text><text x="355" y="118" style="font-size:12px">threshold value</text><text x="190" y="196" style="font-size:13px">X</text><text x="400" y="196" style="font-size:13px">X</text><text x="18" y="30" style="font-size:13px">Y</text><text x="228" y="30" style="font-size:13px">Y</text></svg>
+  <figcaption>Linear regression fits a straight line to continuous values. Logistic regression fits an S-curve to 0/1 outcomes, and a threshold value on the curve decides the class.</figcaption>
+  </figure>
+  <div class="qw"><table class="qt">
+    <tr><th></th><th>Linear regression</th><th>Logistic regression</th></tr>
+    <tr><td>Response variable</td><td>Continuous (e.g. price, age, height, distance)</td><td>Categorical (yes/no, male/female, win/no win)</td></tr>
+    <tr><td>Equation used</td><td>\(Y=\beta_0+\beta_1X_1+\beta_2X_2+\cdots\)</td><td>\(p(Y)=\dfrac{e^{\beta_0+\beta_1X_1+\beta_2X_2+\cdots}}{1+e^{\beta_0+\beta_1X_1+\beta_2X_2+\cdots}}\)</td></tr>
+    <tr><td>Method used to fit the equation</td><td>Ordinary least squares</td><td>Maximum likelihood estimation</td></tr>
+    <tr><td>Output to predict</td><td>A continuous value ($150, 40 years, 10 feet, etc.)</td><td>A probability (0.741, 0.122, 0.345, etc.)</td></tr>
+  </table></div>
+</section>
+
+<section id="s7"><div class="num">7</div><h2>Naive Bayes</h2>
+  <h3 id="nb">Naive Bayes</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="s8"><div class="num">8</div><h2>Decision tree: ID3</h2>
+  <h3 id="id3">Decision tree algorithm ID3</h3><div class="ph">Content to be added.</div>
+</section>
+
+<section id="check"><div class="num">9</div><h2>Self-check</h2>
+  <details><summary>Question 1</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 2</summary><p>Answer to be added.</p></details>
+  <details><summary>Question 3</summary><p>Answer to be added.</p></details>
+</section>
+
+<nav class="pager" aria-label="Next module">
+  <a href="https://leenasilvoster.github.io/Machine_Learning/Module_3.html"><small>Next module</small><span>Module 3 →</span></a>
+</nav>
+<footer><span>CST413 Machine Learning · Module 2</span><a href="https://leenasilvoster.github.io/Machine_Learning/Module_1.html">← Module 1</a></footer>
+</main>
+</div>
+<script>
+var ls=[].slice.call(document.querySelectorAll('#side a'));
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)ls.forEach(function(a){a.classList.toggle('on',a.hash==='#'+e.target.id)})})},{rootMargin:'-15% 0px -75% 0px'});
+document.querySelectorAll('section[id]').forEach(function(s){io.observe(s)});
+</script>
+</body>
+</html>
